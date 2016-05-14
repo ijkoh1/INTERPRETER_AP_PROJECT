@@ -24,11 +24,11 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     View printBlock, remBlock, gotoBlock,ifBlock, letBlock;
 
     private Integer currentLine = 0;
-    private Variable variables;
     private CommandLine commandLine = new CommandLine();
     private Integer lineCount = 0;
 
-
+    /*
+    * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +43,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         console.setText("");
     }
 
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Creates a block of PRINT statement with TextBox shown as user inputs
+    * params: v = view of the PRINT to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: PRINT block statement is created
+    * */
     //when the PRINT button is clicked
     public void onClickPrint(View v) {
         //add PRINT block to display screen
@@ -58,6 +65,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         console.append("PRINT block added.\n");
     }
 
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Creates a block of REM statement with TextBox shown as user inputs
+    * params: v = view of the REM to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: REM block statement is created
+    * */
     public void onClickRem(View v) {
         //add REM block to display screen
         ++lineCount;
@@ -69,9 +83,16 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         transitionCount++;
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-        console.append("REM block added.\n");
+//        console.append("REM block added.\n");
     }
 
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Creates a block of GOTO statement with TextBox shown as user inputs
+    * params: v = view of the GOTO to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: GOTO block statement is created
+    * */
     public void onClickGoto(View v) {
         //add GOTO block to display screen
         ++lineCount;
@@ -83,9 +104,16 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         transitionCount++;
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-        console.append("GOTO block added.\n");
+//        console.append("GOTO block added.\n");
     }
 
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Creates a block of IF statement with TextBox shown as user inputs
+    * params: v = view of the IF to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: IF block statement is created
+    * */
     public void onClickIf(View v) {
         //add IF block to display screen
         ++lineCount;
@@ -97,9 +125,16 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         transitionCount++;
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-        console.append("IF block added.\n");
+//        console.append("IF block added.\n");
     }
 
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Creates a block of LET statement with TextBox shown as user inputs
+    * params: v = view of the LET to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: LET block statement is created
+    * */
     public void onClickLet(View v) {
         //add LET block to display screen
         ++lineCount;
@@ -111,80 +146,86 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         transitionCount++;
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-        console.append("LET block added.\n");
+//        console.append("LET block added.\n");
     }
 
-    public void checkCodeLine(LinearLayout lineCodeView, ViewGroup instruction)
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Reads in the user inputs and creates and adds command into the commandLine variable
+    * params: None
+    * pre_conditions: Command statements must be added
+    * post-conditions: Commands are added into commandLine
+    * */
+    public void checkCodeLine()
     {
         Command cmdObj;
-        if (clear.getId() == R.id.letBlock) {
-            EditText variableNameInput = (EditText) clear.findViewById(R.id.letVariable);
-            EditText expressionValue1Input = (EditText) clear.findViewById(R.id.letValue);
-            EditText operatorInput = (EditText) clear.findViewById(R.id.letOperator);
-            EditText expressionValue2Input = (EditText) clear.findViewById(R.id.letValue2);
-            if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("") && !operatorInput.getText().toString().equals("") && !expressionValue2Input.getText().toString().equals(""))
-            {
-                Variable variableObj = new Variable(variableNameInput.getText().toString());
-                Expression expressionObj = new Expression(expressionValue1Input.getText().toString(), operatorInput.getText().toString(), expressionValue2Input.getText().toString());
-                LETStatement letObj = new LETStatement(currentLine, variableObj, expressionObj);
-                cmdObj = new Command(letObj);
-                commandLine.addCommand(cmdObj);
-            }
-            else
-            {
-                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
-            }
-        }
-        else if (clear.getId() == R.id.gotoBlock)
+        try
         {
-            EditText gotoLineInput = (EditText) clear.findViewById(R.id.gotoEditText);
-            if (!gotoLineInput.getText().toString().equals(""))
-            {
-                GOTOStatement gotoObj = new GOTOStatement(currentLine, Integer.parseInt(gotoLineInput.getText().toString()));
-                cmdObj = new Command(gotoObj);
-                commandLine.addCommand(cmdObj);
+            if (clear.getId() == R.id.letBlock) {
+                EditText variableNameInput = (EditText) clear.findViewById(R.id.letVariable);
+                EditText expressionValue1Input = (EditText) clear.findViewById(R.id.letValue);
+                EditText operatorInput = (EditText) clear.findViewById(R.id.letOperator);
+                EditText expressionValue2Input = (EditText) clear.findViewById(R.id.letValue2);
+                if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("") && !operatorInput.getText().toString().equals("") && !expressionValue2Input.getText().toString().equals("")) {
+                    if (Character.isDigit(variableNameInput.getText().toString().charAt(0))) {
+                        throw new Exception("Variable must not start with an integer");
+                    }
+                    Variable variableObj = new Variable(variableNameInput.getText().toString());
+                    Expression expressionObj = new Expression(expressionValue1Input.getText().toString(), operatorInput.getText().toString(), expressionValue2Input.getText().toString());
+                    LETStatement letObj = new LETStatement(currentLine, variableObj, expressionObj);
+                    cmdObj = new Command(letObj);
+                    commandLine.addCommand(cmdObj);
+                } else {
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                }
+            } else if (clear.getId() == R.id.gotoBlock) {
+                EditText gotoLineInput = (EditText) clear.findViewById(R.id.gotoEditText);
+                if (!gotoLineInput.getText().toString().equals("")) {
+                    GOTOStatement gotoObj = new GOTOStatement(currentLine, Integer.parseInt(gotoLineInput.getText().toString()));
+                    cmdObj = new Command(gotoObj);
+                    commandLine.addCommand(cmdObj);
+                } else {
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                }
+            } else if (clear.getId() == R.id.ifBlock) {
+                EditText expressionLeftSideInput = (EditText) clear.findViewById(R.id.ifVariable);
+                EditText operator = (EditText) clear.findViewById(R.id.ifOperator);
+                EditText expressionRightSideInput = (EditText) clear.findViewById(R.id.ifValue);
+                EditText jumpToLine = (EditText) clear.findViewById(R.id.ifGotoEditText);
+                if (!expressionLeftSideInput.getText().toString().equals("") && !operator.getText().toString().equals("") && !expressionRightSideInput.getText().toString().equals("") && !jumpToLine.getText().toString().equals("")) {
+                    Expression expObj = new Expression(expressionLeftSideInput.getText().toString(), operator.getText().toString(), expressionRightSideInput.getText().toString());
+                    GOTOStatement go2Obj = new GOTOStatement(currentLine, Integer.parseInt(jumpToLine.getText().toString()));
+                    IFStatement ifObj = new IFStatement(currentLine, expObj, go2Obj);
+                    cmdObj = new Command(ifObj);
+                    commandLine.addCommand(cmdObj);
+                } else {
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                }
+            } else if (clear.getId() == R.id.printBlock) {
+                EditText printInput = (EditText) clear.findViewById(R.id.printEditText);
+                if (!printInput.getText().toString().equals("")) {
+                    PRINTStatement printObj = new PRINTStatement(currentLine, printInput.getText().toString());
+                    cmdObj = new Command(printObj);
+                    commandLine.addCommand(cmdObj);
+                } else {
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                }
             }
-            else
-            {
-                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
-            }
+            currentLine++;
         }
-        else if (clear.getId() == R.id.ifBlock)
+        catch (Exception e)
         {
-            EditText expressionLeftSideInput = (EditText) clear.findViewById(R.id.ifVariable);
-            EditText operator = (EditText) clear.findViewById(R.id.ifOperator);
-            EditText expressionRightSideInput = (EditText) clear.findViewById(R.id.ifValue);
-            EditText jumpToLine = (EditText) clear.findViewById(R.id.ifGotoEditText);
-            if (!expressionLeftSideInput.getText().toString().equals("") && !operator.getText().toString().equals("") && !expressionRightSideInput.getText().toString().equals("") && !jumpToLine.getText().toString().equals(""))
-            {
-                Expression expObj = new Expression(expressionLeftSideInput.getText().toString(), operator.getText().toString(), expressionRightSideInput.getText().toString());
-                GOTOStatement go2Obj = new GOTOStatement(currentLine, Integer.parseInt(jumpToLine.getText().toString()));
-                IFStatement ifObj = new IFStatement(currentLine, expObj, go2Obj);
-                cmdObj = new Command(ifObj);
-                commandLine.addCommand(cmdObj);
-            }
-            else
-            {
-                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
-            }
+            console.append(String.format("Line %d ERROR: %s\n",currentLine+1,e.getMessage()));
         }
-        else if (clear.getId() == R.id.printBlock)
-        {
-            EditText printInput = (EditText) clear.findViewById(R.id.printEditText);
-            if (!printInput.getText().toString().equals(""))
-            {
-                PRINTStatement printObj = new PRINTStatement(currentLine, printInput.getText().toString());
-                cmdObj = new Command(printObj);
-                commandLine.addCommand(cmdObj);
-            }
-            else
-            {
-                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
-            }
-        }
-        currentLine++;
     }
 
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Uses GOTO_interpretr methods to run the commandLine statements and display the output
+    * params: v = view of the Transition button to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: CommandLine is executed and output is displayed in the console
+    * */
     public void onClickTransition(View v){
 
         //get display-screen object
@@ -198,7 +239,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 //            transitionClear = (TextView) clear.getChildAt(0);
 //            transitionClear.setText("||");
 
-            checkCodeLine(clear,instruction);
+            checkCodeLine();
         }
 
 //        ArrayList<Command> cmLine = commandLine.getCommandLines();
@@ -227,7 +268,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
     }
 
-    //clear display screen if there are blocks
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Clears all commandLine
+    * params: v = view of the ClearDisplay to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: All command blocks are deleted
+    * */
     public void onClickClearDisplay(View v){
         lineCount = 0;
         commandLine.removeALLExpressions();
@@ -238,7 +285,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
-    //clear console if there are texts
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Clears the console
+    * params: v = view of the ClearConsole to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: All text in the console is cleared
+    * */
     public void onClickClearConsole(View v){
         console = (TextView) findViewById(R.id.console);
         if (!console.getText().equals("")){
@@ -248,7 +301,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 //        console.setText(txt);
     }
 
-    //remove block
+    /*
+    * Author: Hanna & Ivan
+    * purpose: Deletes a specified command line
+    * params: v = view of the DeleteStatement to detect when it is clicked
+    * pre_conditions: Instruction and console view must exist
+    * post-conditions: A command block statement is deleted
+    * */
     public void onClickDeleteStatement(View v){
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);
         LinearLayout block = (LinearLayout) v.getParent();
@@ -256,7 +315,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
         //update line numbers
         TextView blockNum = (TextView) block.getChildAt(0);
-        if (commandLine.getCommandLines().size() > 0){
+        TextView blockName = (TextView) block.getChildAt(1);
+        String statement = blockName.getText().toString();
+        if (commandLine.getCommandLines().size() > 0 && statement.equals("REM")){
             commandLine.removeExpression(Integer.parseInt(blockNum.getText().toString()));
         }
         lineCount =  Integer.parseInt((String)blockNum.getText())-1;

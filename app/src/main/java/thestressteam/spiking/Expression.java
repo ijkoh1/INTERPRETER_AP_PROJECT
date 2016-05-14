@@ -8,9 +8,16 @@ public class Expression {
     private String rightSide;
     private String operator;
     private Integer result;
-    private Variable leftVariable;
-    private Variable rightVariable;
 
+    /*
+    * Author: Ivan
+    * purpose: Initialize variables according to the parameters of an expression
+    * params: leftSize = A string of the variable/integer of the left side of the expression
+    *         operator = A string of the operator
+    *         rightSide = A string of the variable/integer of the right side of the expression
+    * pre_conditions: None
+    * post-conditions: Variables are initialized in expression object
+    * */
     public Expression(String leftSide, String operator, String rightSide)
     {
         this.leftSide = leftSide;
@@ -19,6 +26,15 @@ public class Expression {
         this.result = null;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Calculates the result after applying the operator from 2 values
+    * params: num1 = A string of the variable/integer of the left side of the expression
+    *         op = A string of the operator
+    *         num2 = A string of the variable/integer of the right side of the expression
+    * pre_conditions: None
+    * post-conditions: Returns a integer as the result from applying the operator
+    * */
     public Integer operation(String op, String num1, String num2){
         Integer num3 = null;
         Integer num1Value =Integer.parseInt(num1);
@@ -48,16 +64,37 @@ public class Expression {
         return num3;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Retrieves the string of the leftSide of expression
+    * params: None
+    * pre_conditions: None
+    * post-conditions: Returns a string
+    * */
     public String getLeftSide()
     {
         return this.leftSide;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Retrieves the string of the rightSide of expression
+    * params: None
+    * pre_conditions: None
+    * post-conditions: Returns a string
+    * */
     public String getRightSide()
     {
         return this.rightSide;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Retrieves the result of the expression
+    * params: None
+    * pre_conditions: None
+    * post-conditions: Returns a integer
+    * */
     public Integer getResult(String leftSide,String rightSide)
     {
         this.leftSide = leftSide;

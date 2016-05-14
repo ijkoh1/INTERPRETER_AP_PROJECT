@@ -11,6 +11,15 @@ public class LETStatement extends Statement {
     private Integer rightSide;
     private Integer leftSide;
 
+    /*
+    * Author: Ivan
+    * purpose: Initialize variables according to the parameters of a LETStatement
+    * params: lineNumber = A integer containing the current line number of the command
+    *         variable = A variable object containing the value and name of a variable
+    *         expression = A expression object containing 2 variables/integer and 1 operator
+    * pre_conditions: None
+    * post-conditions: Variables are initialized in LETStatement object
+    * */
     public LETStatement(Integer lineNumber, Variable variable, Expression expression)
     {
         this.currentLine = lineNumber;
@@ -19,6 +28,13 @@ public class LETStatement extends Statement {
         this.statementID = "LET";
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Runs the LETStatement object and returns the current state of declaredVariableList
+    * params: dvl = A dictionary containing the current variables and values
+    * pre_conditions: A statement must exist
+    * post-conditions: Returns the edited state of variables
+    * */
     @Override
     public DeclaredVariableList executeRun(DeclaredVariableList dvl)
     {
@@ -46,21 +62,49 @@ public class LETStatement extends Statement {
         return dvl;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Retrieves the name of the statement
+    * params: None
+    * pre_conditions: None
+    * post-conditions: Returns a string of the statement name
+    * */
     @Override
     public String getStatementID() {
         return this.statementID;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Retrieves the result of the statement
+    * params: None
+    * pre_conditions: None
+    * post-conditions: Returns a integer of the statement result from the statement
+    * */
     @Override
     public Integer getResult() {
-        return this.rightSide;
+        return null;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Increments and returns the currentLine of the statement
+    * params: currentLineNumber = A currentLine number it is pointing at
+    * pre_conditions: A statement must exist
+    * post-conditions: Returns the edited state of currentLine
+    * */
     @Override
     public Integer nextLine(Integer currentLineNumber) {
         return super.nextLine(currentLineNumber);
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Retrieves the currentLine
+    * params: None
+    * pre_conditions: A statement must exist
+    * post-conditions: Returns the currentLine
+    * */
     @Override
     public Integer getCurrentLine() {
         return this.currentLine;

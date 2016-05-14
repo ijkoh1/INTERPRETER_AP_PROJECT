@@ -16,6 +16,13 @@ public class GOTO_interpreter{
     private DeclaredVariableList variableList;
     private Boolean running;
 
+    /*
+    * Author: Ivan
+    * purpose: Initialize the variablesDeclared, currentLineNumber and results
+    * params: commandLine = An array command added in the instruction view
+    * pre_conditions: An array of commands, commandLine
+    * post-conditions: variablesDeclared, currentLineNumber and results are initialized
+    * */
     public GOTO_interpreter(CommandLine commandLine)
     {
         this.currentLineNumber = 0;
@@ -26,6 +33,13 @@ public class GOTO_interpreter{
         this.running = true;
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Iterates according the commands in commandLine and throws any invalid inputs
+    * params: None
+    * pre_conditions: An array of commands, commandLine
+    * post-conditions: CommandLines are executed and results are stored
+    * */
     public void readAllCode()
     {
         ArrayList<Command> currentCommand = commandLine.getCommandLines();
@@ -63,15 +77,29 @@ public class GOTO_interpreter{
         catch (Exception e)
         {
             this.results.clear();
-            writeResults("Line " + (this.currentLineNumber + 1) + " ERROR: " + e.getMessage());
+            writeResults("Line " + (this.currentLineNumber) + " ERROR: " + e.getMessage());
         }
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Writes the results from the commandLine
+    * params: result = A array of Strings to store the results
+    * pre_conditions: A string of result
+    * post-conditions: results are stored
+    * */
     public void writeResults(String result)
     {
         this.results.add(result);
     }
 
+    /*
+    * Author: Ivan
+    * purpose: Retrieves the result
+    * params: None
+    * pre_conditions: None
+    * post-conditions: Returns the array results
+    * */
     public ArrayList<String> getResults()
     {
         return this.results;
