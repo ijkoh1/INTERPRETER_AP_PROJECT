@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/INTERPRETER_AP_PROJECT.iml" filepath="$PROJECT_DIR$/.idea/modules/INTERPRETER_AP_PROJECT.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/INTERPRETER_AP_PROJECT.iml" filepath="$PROJECT_DIR$/INTERPRETER_AP_PROJECT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/INTERPRETER_AP_PROJECT.iml" filepath="$PROJECT_DIR$/INTERPRETER_AP_PROJECT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+>>>>>>> 6bc84196822daf9fe63aee03b562fe4ffe618946
     </modules>
   </component>
 </project>

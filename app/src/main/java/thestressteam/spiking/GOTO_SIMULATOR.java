@@ -231,4 +231,20 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 //        String txt = lineCount + " lines were created";
 //        console.setText(txt);
     }
+    //remove block
+    public void onClickDeleteStatement(View v){
+        instruction = (LinearLayout) findViewById(R.id.displayInstructions);
+        LinearLayout block = (LinearLayout) v.getParent();
+        instruction.removeView(block);
+
+        //update line numbers
+        TextView blockNum = (TextView) block.getChildAt(0);
+        lineCount =  Integer.parseInt((String)blockNum.getText())-1;
+        for (int i = lineCount; i<instruction.getChildCount(); i++){
+            lineCount++;
+            block = (LinearLayout) instruction.getChildAt(i);
+            blockNum = (TextView) block.getChildAt(0);
+            blockNum.setText(Integer.toString(lineCount));
+        }
+    }
 }
