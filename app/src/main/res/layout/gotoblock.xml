@@ -6,9 +6,9 @@
     android:background="#f5f785"
     android:id="@+id/gotoBlock"
     android:layout_centerInParent="true"
-    android:paddingLeft="30dp"
+    android:paddingLeft="20dp"
     android:paddingTop="10dp"
-    android:paddingRight="30dp"
+    android:paddingRight="20dp"
     android:paddingBottom="10dp">
 
     <TextView
@@ -17,15 +17,16 @@
         android:id="@+id/gotoTransition"
         android:layout_weight="0.1"
         android:text="||"
-        android:gravity="center" />
+        android:gravity="center"
+        android:layout_gravity="center" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="GOTO"
         android:id="@+id/gotoText"
-        android:layout_gravity="center|left"
-        android:layout_weight="0.3"
+        android:layout_gravity="center"
+        android:layout_weight="0.2"
         android:gravity="center" />
 
     <EditText
@@ -35,7 +36,17 @@
         android:ems="10"
         android:id="@+id/gotoEditText"
         android:background="#ffffff"
-        android:layout_gravity="center|right"
+        android:layout_gravity="center"
         android:layout_weight="0.6" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/gotoDelete"
+        android:layout_weight="0.1"
+        android:background="@android:color/transparent"
+        android:src="@drawable/abc_ic_clear_mtrl_alpha"
+        android:layout_gravity="center"
+        android:onClick="onClickDeleteStatement" />
 
 </LinearLayout>
