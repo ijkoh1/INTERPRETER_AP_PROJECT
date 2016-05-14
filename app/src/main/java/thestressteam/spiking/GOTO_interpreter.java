@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class GOTO_interpreter{
     private Integer currentLineNumber;
+    private Integer previousLineNumber;
     private ArrayList<String> results;
     private CommandLine commandLine;
     private DeclaredVariableList variableList;
@@ -18,6 +19,7 @@ public class GOTO_interpreter{
     public GOTO_interpreter(CommandLine commandLine)
     {
         this.currentLineNumber = 0;
+        this.previousLineNumber = null;
         this.commandLine = commandLine;
         this.results = new ArrayList<String>();
         this.variableList = new DeclaredVariableList();
@@ -32,7 +34,7 @@ public class GOTO_interpreter{
             while (this.running) {
                 if (this.currentLineNumber.equals(currentCommand.size() - 1)) {
                     this.running = false;
-                } else if (this.currentLineNumber > currentCommand.size()) {
+                } else if (this.currentLineNumber >= currentCommand.size()) {
                     throw new Exception("GOTO exceed the lineNumber");
                 }
                 Statement statement = currentCommand.get(this.currentLineNumber).getStatement();
@@ -42,9 +44,17 @@ public class GOTO_interpreter{
                 variableList = statement.executeRun(variableList);
                 if (variableList == null)
                 {
-                    throw new Exception("e");
+                    throw new Exception("Invalid Input.");
                 }
+                this.previousLineNumber = this.currentLineNumber;
                 this.currentLineNumber = statement.getCurrentLine();
+                if (statement.getStatementID().equals("GOTO"))
+                {
+                    if (this.currentLineNumber.equals(this.previousLineNumber))
+                    {
+                        throw new Exception("GOTO cannot go to itself");
+                    }
+                }
                 if (statement.getStatementID().equals("PRINT")) {
                     writeResults(statement.getResult().toString());
                 }
@@ -52,7 +62,8 @@ public class GOTO_interpreter{
         }
         catch (Exception e)
         {
-            writeResults("ERROR");
+            this.results.clear();
+            writeResults("Line " + (this.currentLineNumber + 1) + " ERROR: " + e.getMessage());
         }
     }
 

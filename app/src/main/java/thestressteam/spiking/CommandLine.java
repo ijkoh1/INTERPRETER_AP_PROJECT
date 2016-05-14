@@ -19,9 +19,9 @@ public class CommandLine {
         this.commandLines.add(command);
     }
 
-    public void removeExpression(Command command)
+    public void removeExpression(Integer index)
     {
-        this.commandLines.remove(command);
+        this.commandLines.remove(index-1);
     }
 
     public void removeALLExpressions()

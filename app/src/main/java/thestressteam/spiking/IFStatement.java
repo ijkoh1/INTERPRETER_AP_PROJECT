@@ -28,6 +28,10 @@ public class IFStatement extends Statement{
         String rightSide = dvl.getValue((expression.getRightSide())).toString();
         String leftSide = dvl.getValue((expression.getLeftSide())).toString();
         this.result = expression.getResult(leftSide,rightSide);
+        if (this.result == null)
+        {
+            return null;
+        }
         if (this.result != 0)
         {
             this.gotoStatement.executeRun(dvl);

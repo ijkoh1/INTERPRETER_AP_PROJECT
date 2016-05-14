@@ -130,6 +130,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 cmdObj = new Command(letObj);
                 commandLine.addCommand(cmdObj);
             }
+            else
+            {
+                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
+            }
         }
         else if (clear.getId() == R.id.gotoBlock)
         {
@@ -139,6 +143,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 GOTOStatement gotoObj = new GOTOStatement(currentLine, Integer.parseInt(gotoLineInput.getText().toString()));
                 cmdObj = new Command(gotoObj);
                 commandLine.addCommand(cmdObj);
+            }
+            else
+            {
+                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
             }
         }
         else if (clear.getId() == R.id.ifBlock)
@@ -155,6 +163,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 cmdObj = new Command(ifObj);
                 commandLine.addCommand(cmdObj);
             }
+            else
+            {
+                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
+            }
         }
         else if (clear.getId() == R.id.printBlock)
         {
@@ -164,6 +176,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 PRINTStatement printObj = new PRINTStatement(currentLine, printInput.getText().toString());
                 cmdObj = new Command(printObj);
                 commandLine.addCommand(cmdObj);
+            }
+            else
+            {
+                console.append(String.format("Line %d Please fill up the textBox input\n",currentLine));
             }
         }
         currentLine++;
@@ -231,6 +247,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 //        String txt = lineCount + " lines were created";
 //        console.setText(txt);
     }
+
     //remove block
     public void onClickDeleteStatement(View v){
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);
@@ -239,6 +256,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
         //update line numbers
         TextView blockNum = (TextView) block.getChildAt(0);
+        if (commandLine.getCommandLines().size() > 0){
+            commandLine.removeExpression(Integer.parseInt(blockNum.getText().toString()));
+        }
         lineCount =  Integer.parseInt((String)blockNum.getText())-1;
         for (int i = lineCount; i<instruction.getChildCount(); i++){
             lineCount++;

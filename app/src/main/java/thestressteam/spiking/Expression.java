@@ -20,7 +20,7 @@ public class Expression {
     }
 
     public Integer operation(String op, String num1, String num2){
-        Integer num3 = 0;
+        Integer num3 = null;
         Integer num1Value =Integer.parseInt(num1);
         Integer num2Value = Integer.parseInt(num2);
         if (op.equals("+")){

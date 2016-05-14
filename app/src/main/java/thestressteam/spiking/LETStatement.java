@@ -32,6 +32,10 @@ public class LETStatement extends Statement {
                 throw new Exception("variable not declared");
             }
             value = this.expression.getResult(leftSide.toString(),rightSide.toString());
+            if (value == null)
+            {
+                throw new Exception("Invalid operation given");
+            }
             dvl.assgnVariable(variable.getVariableName(),value);
             this.currentLine = nextLine(this.currentLine);
         }
