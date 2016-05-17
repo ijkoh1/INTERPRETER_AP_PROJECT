@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 /**
  * Created by Ivan on 5/9/2016.
+ * Purpose: CommandLine class is to store a list of command objects and modify the list by add and remove.
  */
 
 public class CommandLine {
+    // An arrayList to store a list of command objects
     private ArrayList<Command> commandLines;
 
     /*
@@ -15,6 +17,7 @@ public class CommandLine {
     * params: None
     * pre_conditions: None
     * post-conditions: CommandLine Object now stores an arrayList of commandLine
+    * exceptions handling: None
     * */
     public CommandLine()
     {
@@ -27,6 +30,7 @@ public class CommandLine {
     * params: command = the command Object to be inserted
     * pre_conditions: An array of commands, commandLine
     * post-conditions: command is inserted into commandLine
+    * exceptions handling: None
     * */
     public void addCommand(Command command)
     {
@@ -39,6 +43,7 @@ public class CommandLine {
     * params: index = An index of an element to be deleted
     * pre_conditions: An array of commands, commandLine
     * post-conditions: the index of the commandLine is removed
+    * exceptions handling: None
     * */
     public void removeExpression(Integer index)
     {
@@ -51,6 +56,7 @@ public class CommandLine {
     * params: None
     * pre_conditions: An array of commands, commandLine
     * post-conditions: All commands are removed
+    * exceptions handling: None
     * */
     public void removeALLExpressions()
     {

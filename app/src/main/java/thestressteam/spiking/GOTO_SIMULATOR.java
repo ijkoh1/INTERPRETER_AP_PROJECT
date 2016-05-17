@@ -14,20 +14,33 @@ import android.widget.TextView;
 import java.io.Console;
 import java.util.ArrayList;
 
-
+/*
+* Author: Hanna & Ivan
+* Purpose: GOTO_SIMULATOR is in charge of handling the user inputs such as button clicks.*/
 public class GOTO_SIMULATOR extends AppCompatActivity{
-
+    //LinearLayout so that we can add command gui
     LinearLayout from, to, clear;
+    //TextView so that we can get the text of the block
     TextView transitionFrom,transitionTo, transitionClear, console;
     int transitionCount = 0, lineNum;
+    //A viewgroup to add command blocks
     ViewGroup instruction;
+    //A view for all the commands available
     View printBlock, remBlock, gotoBlock,ifBlock, letBlock;
-
+    //An integer to detect number of lines added
     private Integer currentLine = 0;
+    //A CommandLine object to store the command lines
     private CommandLine commandLine = new CommandLine();
+    //An integer to count the number of lines added
     private Integer lineCount = 0;
 
     /*
+    * Author: Hanna
+    * purpose: Recreates the gui if the app reopens again and initialize the view of instructions
+    * params: savedInstanceState = Retrieves the previous state if the app reopens again
+    * pre_conditions: None
+    * post-conditions: None
+    * exception handling: None
     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +60,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     * Author: Hanna & Ivan
     * purpose: Creates a block of PRINT statement with TextBox shown as user inputs
     * params: v = view of the PRINT to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist
+    * pre_conditions: Instruction and console view must exist and when the PRINT button is clicked
     * post-conditions: PRINT block statement is created
+    * exception handling: None
     * */
-    //when the PRINT button is clicked
     public void onClickPrint(View v) {
         //add PRINT block to display screen
         ++lineCount;
@@ -62,15 +75,16 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-        console.append("PRINT block added.\n");
+//        console.append("PRINT block added.\n");
     }
 
     /*
     * Author: Hanna & Ivan
     * purpose: Creates a block of REM statement with TextBox shown as user inputs
     * params: v = view of the REM to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist
+    * pre_conditions: Instruction and console view must exist and when the REM button is clicked
     * post-conditions: REM block statement is created
+    * exception handling: None
     * */
     public void onClickRem(View v) {
         //add REM block to display screen
@@ -89,9 +103,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     /*
     * Author: Hanna & Ivan
     * purpose: Creates a block of GOTO statement with TextBox shown as user inputs
-    * params: v = view of the GOTO to detect when it is clicked
+    * params: v = view of the GOTO to detect when it is clicked and when the GOTO button is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: GOTO block statement is created
+    * exception handling: None
     * */
     public void onClickGoto(View v) {
         //add GOTO block to display screen
@@ -110,9 +125,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     /*
     * Author: Hanna & Ivan
     * purpose: Creates a block of IF statement with TextBox shown as user inputs
-    * params: v = view of the IF to detect when it is clicked
+    * params: v = view of the IF to detect when it is clicked and when the IF button is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: IF block statement is created
+    * exception handling: None
     * */
     public void onClickIf(View v) {
         //add IF block to display screen
@@ -131,9 +147,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     /*
     * Author: Hanna & Ivan
     * purpose: Creates a block of LET statement with TextBox shown as user inputs
-    * params: v = view of the LET to detect when it is clicked
+    * params: v = view of the LET to detect when it is clicked and when the LET button is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: LET block statement is created
+    * exception handling: None
     * */
     public void onClickLet(View v) {
         //add LET block to display screen
@@ -155,6 +172,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     * params: None
     * pre_conditions: Command statements must be added
     * post-conditions: Commands are added into commandLine
+    * exception handling: case 1: if user inputs are null
+    *                     case 2: if name of variable starts an integer
     * */
     public void checkCodeLine()
     {
@@ -225,8 +244,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     * params: v = view of the Transition button to detect when it is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: CommandLine is executed and output is displayed in the console
+    * exception handling: None
     * */
-    public void onClickTransition(View v){
+    public void onClickStart(View v){
 
         //get display-screen object
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);
@@ -274,10 +294,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     * params: v = view of the ClearDisplay to detect when it is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: All command blocks are deleted
+    * exception handling: None
     * */
-    public void onClickClearDisplay(View v){
+    public void onClickNewProgram(View v){
         lineCount = 0;
-        commandLine.removeALLExpressions();
+        console = (TextView) findViewById(R.id.console);
+        if (!console.getText().equals("")){
+            console.setText("");
+        }
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);
         if (instruction.getChildCount() > 0){
             instruction.removeAllViews();
@@ -291,6 +315,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     * params: v = view of the ClearConsole to detect when it is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: All text in the console is cleared
+    * exception handling: None
     * */
     public void onClickClearConsole(View v){
         console = (TextView) findViewById(R.id.console);
@@ -307,6 +332,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     * params: v = view of the DeleteStatement to detect when it is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: A command block statement is deleted
+    * exception handling: None
     * */
     public void onClickDeleteStatement(View v){
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);

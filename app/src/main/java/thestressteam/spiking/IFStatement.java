@@ -1,14 +1,22 @@
 package thestressteam.spiking;
 
+import java.util.HashMap;
+
 /**
  * Created by Ivan on 5/9/2016.
+ * purpose: IFStatement class is in charge of storing its parameters and executing the IF statement
  */
 public class IFStatement extends Statement{
-    private Integer result;
+    //An integer to store the line number of the statement
     private Integer currentLine;
+    //A string to store the name of the statement
     private String statementID;
+    //An Expression object to store the parameters of the expression
     private Expression expression;
+    //A GOTOStatement object to store the parameters and methods of the gotoStatement
     private GOTOStatement gotoStatement;
+    //An integer to store the result from the expression
+    private Integer result;
 
     /*
     * Author: Ivan
@@ -18,6 +26,7 @@ public class IFStatement extends Statement{
     *         gotoStatement = A GOTOStatement object containing a integer to go to
     * pre_conditions: None
     * post-conditions: Variables are initialized in IFStatement object
+    * exception handling: None
     * */
     public IFStatement(Integer lineNumber, Expression expression, GOTOStatement gotoStatement)
     {
@@ -25,6 +34,7 @@ public class IFStatement extends Statement{
         this.expression = expression;
         this.gotoStatement = gotoStatement;
         this.statementID = "IF";
+        this.result = null;
     }
 
     /*
@@ -33,6 +43,7 @@ public class IFStatement extends Statement{
     * params: None
     * pre_conditions: None
     * post-conditions: Returns a string of the statement name
+    * exception handling: None
     * */
     @Override
     public String getStatementID() {
@@ -45,6 +56,7 @@ public class IFStatement extends Statement{
     * params: dvl = A dictionary containing the current variables and values
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of variables
+    * exception handling: None
     * */
     @Override
     public DeclaredVariableList executeRun(DeclaredVariableList dvl) {
@@ -55,14 +67,9 @@ public class IFStatement extends Statement{
         {
             return null;
         }
-        if (this.result != 0)
-        {
-            this.gotoStatement.executeRun(dvl);
-            this.currentLine = this.gotoStatement.getCurrentLine();
-        }
         else
         {
-            this.currentLine = nextLine(this.currentLine);
+            this.gotoStatement.executeRun(dvl);
         }
         return dvl;
     }
@@ -73,10 +80,16 @@ public class IFStatement extends Statement{
     * params: currentLineNumber = A currentLine number it is pointing at
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of currentLine
+    * exception handling: None
     * */
     @Override
-    public Integer nextLine(Integer currentLineNumber) {
-        return super.nextLine(currentLineNumber);
+    public Integer nextLine() {
+        Integer nextLineNumber = this.currentLine + 1;
+        if (this.result != 0)
+        {
+            nextLineNumber = this.gotoStatement.nextLine();
+        }
+        return nextLineNumber;
     }
 
     /*
@@ -85,6 +98,7 @@ public class IFStatement extends Statement{
     * params: None
     * pre_conditions: A statement must exist
     * post-conditions: Returns the currentLine
+    * exception handling: None
     * */
     @Override
     public Integer getCurrentLine() {
@@ -97,6 +111,7 @@ public class IFStatement extends Statement{
     * params: None
     * pre_conditions: None
     * post-conditions: Returns a integer of the statement result from the statement
+    * exception handling: None
     * */
     @Override
     public Integer getResult() {

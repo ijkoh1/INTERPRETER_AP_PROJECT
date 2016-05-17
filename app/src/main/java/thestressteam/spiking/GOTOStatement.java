@@ -2,10 +2,14 @@ package thestressteam.spiking;
 
 /**
  * Created by Ivan on 5/9/2016.
+ * purpose: GOTOStatement class is in charge of storing its parameters and executing the goto statement
  */
 public class GOTOStatement extends Statement{
+    //An integer to store the line to jump
     private Integer jumpToLine;
+    //An integer to store the current line number for the statment
     private Integer currentLine;
+    //A string to store the name of the statement
     private String statementID;
 
     /*
@@ -15,6 +19,7 @@ public class GOTOStatement extends Statement{
     *         jumpToLine = A integer containing the line to jump
     * pre_conditions: None
     * post-conditions: Variables are initialized in GOTOStatement object
+    * exception handling: None
     * */
     public GOTOStatement(Integer lineNumber, Integer jumpToLine)
     {
@@ -29,6 +34,7 @@ public class GOTOStatement extends Statement{
     * params: None
     * pre_conditions: None
     * post-conditions: Returns a string of the statement name
+    * exception handling: None
     * */
     @Override
     public String getStatementID() {
@@ -41,6 +47,7 @@ public class GOTOStatement extends Statement{
     * params: None
     * pre_conditions: A result must exist
     * post-conditions: Returns a integer of the statement result from the statement
+    * exception handling: None
     * */
     @Override
     public Integer getResult() {
@@ -53,11 +60,11 @@ public class GOTOStatement extends Statement{
     * params: dvl = A dictionary containing the current variables and values
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of variables
+    * exception handling: None
     * */
     @Override
     public DeclaredVariableList executeRun(DeclaredVariableList dvl)
     {
-        this.currentLine = this.nextLine(this.jumpToLine-1);
         return dvl;
     }
 
@@ -67,11 +74,13 @@ public class GOTOStatement extends Statement{
     * params: jumpToLine = A linenumber to go to
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of currentLine
+    * exception handling: None
     * */
     @Override
-    public Integer nextLine(Integer jumpToLine)
+    public Integer nextLine()
     {
-        return jumpToLine;
+        Integer nextLineNumber = this.jumpToLine-1;
+        return nextLineNumber;
     }
 
     /*
@@ -80,6 +89,7 @@ public class GOTOStatement extends Statement{
     * params: None
     * pre_conditions: A statement must exist
     * post-conditions: Returns the currentLine
+    * exception handling: None
     * */
     @Override
     public Integer getCurrentLine()

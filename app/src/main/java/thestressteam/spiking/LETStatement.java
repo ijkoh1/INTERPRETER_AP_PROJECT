@@ -1,15 +1,20 @@
 package thestressteam.spiking;
 
+import java.util.HashMap;
+
 /**
  * Created by Ivan on 5/10/2016.
+ * purpose: LETStatement class is in charge of storing its parameters and executing the LET statement
  */
 public class LETStatement extends Statement {
+    //A Variable object to store the value and name of the varaible
     private Variable variable;
+    //A Expression object to store the parameters of the expression
     private Expression expression;
+    //An integer to store the current line number of the statement
     private Integer currentLine;
+    //A string to store the name of the statement
     private String statementID;
-    private Integer rightSide;
-    private Integer leftSide;
 
     /*
     * Author: Ivan
@@ -40,8 +45,8 @@ public class LETStatement extends Statement {
     {
         Integer value;
         dvl.declareVariable(variable.getVariableName());
-        rightSide = dvl.getValue((expression.getRightSide()));
-        leftSide = dvl.getValue((expression.getLeftSide()));
+        Integer rightSide = dvl.getValue((expression.getRightSide()));
+        Integer leftSide = dvl.getValue((expression.getLeftSide()));
         try
         {
             if (rightSide == null || leftSide == null){
@@ -53,13 +58,12 @@ public class LETStatement extends Statement {
                 throw new Exception("Invalid operation given");
             }
             dvl.assgnVariable(variable.getVariableName(),value);
-            this.currentLine = nextLine(this.currentLine);
+            return dvl;
         }
         catch (Exception e)
         {
             return null;
         }
-        return dvl;
     }
 
     /*
@@ -94,8 +98,9 @@ public class LETStatement extends Statement {
     * post-conditions: Returns the edited state of currentLine
     * */
     @Override
-    public Integer nextLine(Integer currentLineNumber) {
-        return super.nextLine(currentLineNumber);
+    public Integer nextLine() {
+        Integer nextLineNumber = this.currentLine + 1;
+        return nextLineNumber;
     }
 
     /*

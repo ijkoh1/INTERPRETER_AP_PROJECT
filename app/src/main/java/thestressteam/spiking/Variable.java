@@ -2,9 +2,12 @@ package thestressteam.spiking;
 
 /**
  * Created by Ivan on 5/9/2016.
+ * Purpose: Variable class is in charge of storing the variables
  */
 public class Variable {
+    //A string to store the name of the variable
     private String name;
+    //An integer to store the value of the variable
     private Integer value;
 
     /*

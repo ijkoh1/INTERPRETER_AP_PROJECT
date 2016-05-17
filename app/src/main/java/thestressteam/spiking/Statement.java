@@ -1,22 +1,22 @@
 package thestressteam.spiking;
 
+import java.util.HashMap;
+
 /**
  * Created by Ivan on 5/9/2016.
+ * Purpose: This statement class is an abstract so that GOTO,IF,LET,and PRINT can inherit the methods
  */
 
 public abstract class Statement {
     /*
     * Author: Ivan
-    * purpose: Iterates to the next line by incrementing the currentLineNumber
-    * params: currentLineNumber = A integer containing the current line number of the command
+    * purpose: An abstract method which increments the currentLineNumber
+    * params: None
     * pre_conditions: None
     * post-conditions: Returns the currentLineNumber
+    * exception handling: None
     * */
-    public Integer nextLine(Integer currentLineNumber)
-    {
-        ++currentLineNumber;
-        return currentLineNumber;
-    }
+    public abstract Integer nextLine();
 
     /*
     * Author: Ivan
@@ -24,6 +24,7 @@ public abstract class Statement {
     * params: None
     * pre_conditions: A statement must exists
     * post-conditions: Returns name of the statement
+    * exception handling: None
     * */
     public abstract String getStatementID();
 
@@ -33,6 +34,7 @@ public abstract class Statement {
     * params: None
     * pre_conditions: A statement must exists
     * post-conditions: Returns result of the statement
+    * exception handling: None
     * */
     public abstract Integer getResult();
 
@@ -42,6 +44,7 @@ public abstract class Statement {
     * params: None
     * pre_conditions: A statement must exists
     * post-conditions: Returns the currentLine
+    * exception handling: None
     * */
     public abstract Integer getCurrentLine();
 
@@ -51,6 +54,7 @@ public abstract class Statement {
     * params: None
     * pre_conditions: A statement must exists
     * post-conditions: Returns current state of the variables
+    * exception handling: None
     * */
     public abstract DeclaredVariableList executeRun(DeclaredVariableList dvl);
 }

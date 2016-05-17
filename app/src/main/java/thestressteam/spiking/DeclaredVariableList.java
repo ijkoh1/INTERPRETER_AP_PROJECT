@@ -4,9 +4,22 @@ import java.util.HashMap;
 
 /**
  * Created by Ivan on 5/11/2016.
+ * Purpose: DeclaredVariableList is in charge of storing the variables that are declared.
+ *          This class helps remove,add,retrieve variables from the HashMap of variableDict
  */
 public class DeclaredVariableList {
+    // A dictionary to store the values and names of the variable.
+    // Each variable names are unique and must have a value
     private HashMap<String,Integer> variableDict;
+
+    /*
+    * Author: Ivan
+    * purpose: Initialize the dictionary,variableDict, to empty
+    * params: None
+    * pre_conditions: None
+    * post-conditions: An empty dictionary is created
+    * exceptions handling: None
+    * */
     public DeclaredVariableList()
     {
         variableDict = new HashMap<String,Integer>();
@@ -18,6 +31,7 @@ public class DeclaredVariableList {
     * params: variableName = A string of the variable to be found
     * pre_conditions: A dictionary of variables, variableDict
     * post-conditions: Returns a boolean of whether it is found
+    * exceptions handling: None
     * */
     public boolean searchVariableDeclared(String variableName)
     {
@@ -27,12 +41,16 @@ public class DeclaredVariableList {
         return false;
     }
 
+    public HashMap<String,Integer> getHash(){
+        return this.variableDict;
+    }
     /*
     * Author: Ivan
     * purpose: Clears all elements in the dictionary
     * params: None
     * pre_conditions: A dictionary of variables, variableDict
     * post-conditions: Removes all elements in variableDict
+    * exceptions handling: None
     * */
     public void clearHash()
     {
@@ -45,6 +63,7 @@ public class DeclaredVariableList {
     * params: variableName = A string of the variable name
     * pre_conditions: A dictionary of variables, variableDict
     * post-conditions: variable is added into the variableDict
+    * exceptions handling: None
     * */
     public void declareVariable(String variableName)
     {
@@ -60,6 +79,7 @@ public class DeclaredVariableList {
     * params: variableName = A string of the variable
     * pre_conditions: A dictionary of variables, variableDict
     * post-conditions: The variable is deleted from variableDict
+    * exceptions handling: None
     * */
     public void removeVariable(String variableName)
     {
@@ -74,8 +94,9 @@ public class DeclaredVariableList {
     * purpose: Assigns a value into a declared variable
     * params: variableName = A string of the variable
     *         value = A integer to store the value of variable
-    * pre_conditions: A dictionary of variables, variableDict
+    * pre_conditions: A dictionary of variables, variableDict, and the variable name must exists in the dictionary
     * post-conditions: The value of the variable is edited
+    * exceptions handling: None
     * */
     public void assgnVariable(String variableName, int value)
     {
@@ -91,6 +112,7 @@ public class DeclaredVariableList {
     * params: variableName = A string of the variable
     * pre_conditions: A dictionary of variables, variableDict
     * post-conditions: Returns a value of the variable if it exits, else returns null
+    * exceptions handling: None
     * */
     public Integer getValue(String variableName)
     {

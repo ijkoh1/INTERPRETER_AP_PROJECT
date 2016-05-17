@@ -4,10 +4,14 @@ package thestressteam.spiking;
  * Created by Ivan on 5/9/2016.
  */
 public class PRINTStatement extends Statement {
+    //An integer to store the variable/integer the user wants to print
     private String value;
-    private Integer result;
+    //An integer to store the current line number for the statment
     private Integer currentLine;
+    //A string to store the name of the statement
     private String statementID;
+    //An integer to store the result of the variable/integer to print
+    private Integer result;
 
     /*
     * Author: Ivan
@@ -36,7 +40,6 @@ public class PRINTStatement extends Statement {
     public DeclaredVariableList executeRun(DeclaredVariableList dvl)
     {
         this.result = dvl.getValue(this.value);
-        this.currentLine = nextLine(this.currentLine);
         return dvl;
     }
 
@@ -72,9 +75,10 @@ public class PRINTStatement extends Statement {
     * post-conditions: Returns the edited state of currentLine
     * */
     @Override
-    public Integer nextLine(Integer currentLineNumber)
+    public Integer nextLine()
     {
-        return super.nextLine(currentLineNumber);
+        Integer nextLineNumber = this.currentLine + 1;
+        return nextLineNumber;
     }
 
     /*

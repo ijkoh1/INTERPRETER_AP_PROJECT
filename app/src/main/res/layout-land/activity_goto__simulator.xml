@@ -150,18 +150,18 @@
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Transition"
-                        android:id="@+id/transition"
-                        android:onClick="onClickTransition"
+                        android:text="START"
+                        android:id="@+id/start"
+                        android:onClick="onClickStart"
                         android:textSize="8dp" />
 
                     <Button
                         style="?android:attr/buttonStyleSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Clear Display"
+                        android:text="NEW"
                         android:id="@+id/clearDisplay"
-                        android:onClick="onClickClearDisplay"
+                        android:onClick="onClickNewProgram"
                         android:textSize="8dp" />
 
                     <Button
