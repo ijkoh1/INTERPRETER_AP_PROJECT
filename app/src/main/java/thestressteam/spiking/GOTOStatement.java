@@ -76,7 +76,7 @@ public class GOTOStatement extends Statement{
         details.add(this.currentLine.toString());
         details.add(this.getStatementID());
         details.add(this.jumpToLine.toString());
-        return null;
+        return details;
     }
 
     /*

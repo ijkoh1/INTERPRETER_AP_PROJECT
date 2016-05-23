@@ -32,12 +32,11 @@ public class StatementsLoadSaveFile {
             {
                 Statement statement = commandList.get(lineCount).getStatement();
                 ArrayList<String> details = statement.getDetails();
-                System.out.println(details.size());
-                for (int j = 0; j < details.size() - 1; j++)
+                for (int j = 0; j < details.size(); j++)
                 {
-                    allGotoCodes += details.get(j) + "\n";
+                    allGotoCodes += details.get(j) + " ";
                 }
-                allGotoCodes += details.get(details.size()-1);
+                allGotoCodes += "\n";
             }
             OutputStreamWriter outputWriter = new OutputStreamWriter(outputStream);
             outputWriter.write(allGotoCodes);
