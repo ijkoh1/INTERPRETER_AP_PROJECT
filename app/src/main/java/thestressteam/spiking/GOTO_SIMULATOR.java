@@ -73,6 +73,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         //initialise drag and drop on variable View
         View var = findViewById(R.id.variable);
         onTouchVariable(var);
+
+        View displayScroll = findViewById(R.id.displayScroll);
+        displayScroll.setOnDragListener(new removeVarListener());
     }
 
     /*
@@ -445,7 +448,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 ClipData data = ClipData.newPlainText("", "");
                 v.startDrag(data, shadow, v, 0);
 
-                instruction.setOnDragListener(new removeVarListener());
+                //instruction.setOnDragListener(new removeVarListener());
                 return true;
             }
         });
@@ -454,16 +457,16 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     public class MyDragListener implements View.OnDragListener {
         @Override
         public boolean onDrag(View v, DragEvent event) {
+            View dragged = (View) event.getLocalState();
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 //initialise variable selection spinner
                 Spinner varSelection = new Spinner(GOTO_SIMULATOR.this);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_item, varList);
                 varSelection.setAdapter(adapter);
 
-                //replace textbox with variable spinner
+                //"replace" textbox with variable spinner (make textbox invisible)
                 ViewGroup parent = (ViewGroup) v.getParent();
                 int index = parent.indexOfChild(v);
-                //parent.removeView(v);
                 v.setVisibility(View.INVISIBLE);
                 v.setLayoutParams(new LinearLayout.LayoutParams(0,0,0));
                 parent.addView(varSelection,index);
@@ -483,19 +486,11 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 System.out.println(parent.getChildCount());
                 int index = parent.indexOfChild(dragged);
 
-                //View value = new EditText(GOTO_SIMULATOR.this);
+                //"replace" spinner back to textbox (make textbox visible)
                 parent.removeView(dragged);
                 View textbox = parent.getChildAt(index);
                 textbox.setVisibility(View.VISIBLE);
                 textbox.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,0.3f));
-                //parent.addView(value,index);
-                //View edit = findViewById(R.id.ifValue);
-
-                //LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)edit.getLayoutParams();
-                //new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.1f)\
-                //param.height = LinearLayout.LayoutParams.MATCH_PARENT;
-                //value.setLayoutParams(param);
-                //value.setBackgroundColor(Color.parseColor("#fffff"));
                 System.out.println("DONE");
             }
             return true;

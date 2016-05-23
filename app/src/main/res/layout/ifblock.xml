@@ -65,7 +65,7 @@
 
         <Spinner
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/ifOperator"
             android:layout_weight="0.3"
             android:background="@color/material_deep_teal_200" />
