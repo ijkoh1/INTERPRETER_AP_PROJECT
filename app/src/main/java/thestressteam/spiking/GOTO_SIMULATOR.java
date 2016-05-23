@@ -74,8 +74,12 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         View var = findViewById(R.id.variable);
         onTouchVariable(var);
 
+        //initialise listeners
         View displayScroll = findViewById(R.id.displayScroll);
         displayScroll.setOnDragListener(new removeVarListener());
+
+
+
     }
 
     /*
@@ -141,7 +145,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         transitionCount++;
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-//        console.append("GOTO block added.\n");
+
+        //initialise onFocus listener
+        View gotoEditText = findViewById(R.id.gotoEditText);
+        gotoEditText.setOnFocusChangeListener(new onFocusGOTO());
     }
 
     /*
@@ -175,6 +182,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         View ifValue = ifBlock.findViewById(R.id.ifValue);
         ifVariable.setOnDragListener(new MyDragListener());
         ifValue.setOnDragListener(new MyDragListener());
+        //initialise onFocus listener
+        View ifGotoEditText = findViewById(R.id.ifGotoEditText);
+        ifGotoEditText.setOnFocusChangeListener(new onFocusGOTO());
 
     }
 
@@ -328,9 +338,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         for (int x = 0; x<instruction.getChildCount();x++){
             clear = (LinearLayout) instruction.getChildAt(x);
 
-//            transitionClear = (TextView) clear.getChildAt(0);
-//            transitionClear.setText("||");
-
             checkCodeLine();
         }
 
@@ -454,10 +461,11 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         });
     }
 
+    float textboxWeight;
     public class MyDragListener implements View.OnDragListener {
         @Override
         public boolean onDrag(View v, DragEvent event) {
-            View dragged = (View) event.getLocalState();
+            //View dragged = (View) event.getLocalState();
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 //initialise variable selection spinner
                 Spinner varSelection = new Spinner(GOTO_SIMULATOR.this);
@@ -482,18 +490,58 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         public boolean onDrag(View v, DragEvent event) {
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 View dragged = (View) event.getLocalState();
-                ViewGroup parent = (ViewGroup)dragged.getParent();
-                System.out.println(parent.getChildCount());
-                int index = parent.indexOfChild(dragged);
+                if (dragged instanceof Spinner){
+                    ViewGroup parent = (ViewGroup)dragged.getParent();
+                    System.out.println(parent.getChildCount());
+                    int index = parent.indexOfChild(dragged);
 
-                //"replace" spinner back to textbox (make textbox visible)
-                parent.removeView(dragged);
-                View textbox = parent.getChildAt(index);
-                textbox.setVisibility(View.VISIBLE);
-                textbox.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,0.3f));
-                System.out.println("DONE");
+                    //"replace" spinner back to textbox (make textbox visible)
+                    parent.removeView(dragged);
+                    View textbox = parent.getChildAt(index);
+                    textbox.setVisibility(View.VISIBLE);
+                    if (!textbox.getResources().getResourceName(textbox.getId()).equals("letVariable")){
+                        textbox.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,0.3f));
+                    }else{
+                        textbox.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,0.15f));
+                    }
+
+                }
             }
             return true;
+        }
+    }
+
+    public class touchGOTO implements View.OnClickListener{
+        @Override
+        public void onClick(View v){
+            ViewGroup line = (ViewGroup) v;
+            int gotoLine = instruction.indexOfChild(v)+1;
+            //System.out.println(gotoLine);
+            EditText textbox = (EditText) getCurrentFocus();
+
+            ViewGroup parent = (ViewGroup)textbox.getParent();
+            int textboxIndex = parent.indexOfChild(textbox);
+            if (parent.getChildAt(textboxIndex-1) instanceof TextView){ //if its a TextView
+                TextView blockName = (TextView)parent.getChildAt(textboxIndex-1); //get the name beside the Edittext
+                System.out.println(blockName.getText().toString());
+                if(blockName.getText().toString().equals("GOTO")) {
+                    textbox.setText(Integer.toString(gotoLine));
+                }
+            }
+
+        }
+    }
+
+    public class onFocusGOTO implements EditText.OnFocusChangeListener{
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (hasFocus){
+                int numLines = instruction.getChildCount();
+                for (int i=0;i<numLines;i++){
+                    instruction.getChildAt(i).setOnClickListener(new touchGOTO());
+
+                }
+            }
         }
     }
 
