@@ -87,12 +87,12 @@ public class GOTOStatement extends Statement{
     * post-conditions: Returns the edited state of currentLine
     * exception handling: None
     * */
-    @Override
-    public Integer nextLine()
-    {
-        Integer nextLineNumber = this.jumpToLine-1;
-        return nextLineNumber;
-    }
+//    @Override
+//    public Integer nextLine()
+//    {
+//        Integer nextLineNumber = this.jumpToLine-1;
+//        return nextLineNumber;
+//    }
 
     /*
     * Author: Ivan
@@ -108,8 +108,9 @@ public class GOTOStatement extends Statement{
         return this.currentLine;
     }
 
-    public String getJumpToLine()
+    @Override
+    public Integer getJumpToLine()
     {
-        return this.jumpToLine.toString();
+        return this.jumpToLine;
     }
 }

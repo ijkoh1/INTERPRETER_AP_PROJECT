@@ -27,7 +27,7 @@ import java.util.ArrayList;
 * Purpose: GOTO_SIMULATOR is in charge of handling the user inputs such as button clicks.*/
 public class GOTO_SIMULATOR extends AppCompatActivity{
     //LinearLayout so that we can add command gui
-    LinearLayout from, to, clear;
+    LinearLayout from, to, currentBlock;
     //TextView so that we can get the text of the block
     TextView  console;
     int transitionCount = 0, lineNum;
@@ -230,20 +230,21 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         Command cmdObj;
         try
         {
-            if (clear.getId() == R.id.letBlock) {
-                EditText variableNameInput = (EditText) clear.findViewById(R.id.letVariable);
-                EditText expressionValue1Input = (EditText) clear.findViewById(R.id.letValue);
-                //EditText operatorInput = (EditText) clear.findViewById(R.id.letOperator);
-                EditText expressionValue2Input = (EditText) clear.findViewById(R.id.letValue2);
+            currentLine++;
+            if (currentBlock.getId() == R.id.letBlock) {
+                EditText variableNameInput = (EditText) currentBlock.findViewById(R.id.letVariable);
+                EditText expressionValue1Input = (EditText) currentBlock.findViewById(R.id.letValue);
+                //EditText operatorInput = (EditText) currentBlock.findViewById(R.id.letOperator);
+                EditText expressionValue2Input = (EditText) currentBlock.findViewById(R.id.letValue2);
 
-                Spinner operator = (Spinner)findViewById(R.id.letOperator);
+                Spinner operator = (Spinner) currentBlock.findViewById(R.id.letOperator);
                 //&& !operatorInput.getText().toString().equals("")
-                if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("") && !operator.getSelectedItem().equals(null) && !expressionValue2Input.getText().toString().equals("")) {
+                if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("")  && !expressionValue2Input.getText().toString().equals("")) {
                     if (Character.isDigit(variableNameInput.getText().toString().charAt(0))) {
                         throw new Exception("Variable must not start with an integer");
                     }
                     Variable variableObj = new Variable(variableNameInput.getText().toString());
-                    //operatorInput.getText().toString()
+//                    System.out.println("RIGHT: " + expressionValue1Input.getText().toString() + " EXP: " + operator.getSelectedItem().toString() + " LEFT: " + expressionValue2Input.getText().toString());
                     Expression expressionObj = new Expression(expressionValue1Input.getText().toString(), operator.getSelectedItem().toString(), expressionValue2Input.getText().toString());
                     LETStatement letObj = new LETStatement(currentLine, variableObj, expressionObj);
                     cmdObj = new Command(letObj);
@@ -251,8 +252,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
                 }
-            } else if (clear.getId() == R.id.gotoBlock) {
-                EditText gotoLineInput = (EditText) clear.findViewById(R.id.gotoEditText);
+            } else if (currentBlock.getId() == R.id.gotoBlock) {
+                EditText gotoLineInput = (EditText) currentBlock.findViewById(R.id.gotoEditText);
                 if (!gotoLineInput.getText().toString().equals("")) {
                     GOTOStatement gotoObj = new GOTOStatement(currentLine, Integer.parseInt(gotoLineInput.getText().toString()));
                     cmdObj = new Command(gotoObj);
@@ -260,13 +261,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
                 }
-            } else if (clear.getId() == R.id.ifBlock) {
-                EditText expressionLeftSideInput = (EditText) clear.findViewById(R.id.ifVariable);
-                //EditText operator = (EditText) clear.findViewById(R.id.ifOperator);
-                EditText expressionRightSideInput = (EditText) clear.findViewById(R.id.ifValue);
-                EditText jumpToLine = (EditText) clear.findViewById(R.id.ifGotoEditText);
+            } else if (currentBlock.getId() == R.id.ifBlock) {
+                EditText expressionLeftSideInput = (EditText) currentBlock.findViewById(R.id.ifVariable);
+                //EditText operator = (EditText) currentBlock.findViewById(R.id.ifOperator);
+                EditText expressionRightSideInput = (EditText) currentBlock.findViewById(R.id.ifValue);
+                EditText jumpToLine = (EditText) currentBlock.findViewById(R.id.ifGotoEditText);
 
-                Spinner operator = (Spinner)findViewById(R.id.ifOperator);
+                Spinner operator = (Spinner)currentBlock.findViewById(R.id.ifOperator);
                 if (!expressionLeftSideInput.getText().toString().equals("") && !operator.getSelectedItem().toString().equals(null) && !expressionRightSideInput.getText().toString().equals("") && !jumpToLine.getText().toString().equals("")) {
                     Expression expObj = new Expression(expressionLeftSideInput.getText().toString(), operator.getSelectedItem().toString(), expressionRightSideInput.getText().toString());
                     GOTOStatement go2Obj = new GOTOStatement(currentLine, Integer.parseInt(jumpToLine.getText().toString()));
@@ -276,8 +277,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
                 }
-            } else if (clear.getId() == R.id.printBlock) {
-                EditText printInput = (EditText) clear.findViewById(R.id.printEditText);
+            } else if (currentBlock.getId() == R.id.printBlock) {
+                EditText printInput = (EditText) currentBlock.findViewById(R.id.printEditText);
                 if (!printInput.getText().toString().equals("")) {
                     PRINTStatement printObj = new PRINTStatement(currentLine, printInput.getText().toString());
                     cmdObj = new Command(printObj);
@@ -286,7 +287,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
                 }
             }
-            currentLine++;
         }
         catch (Exception e)
         {
@@ -302,7 +302,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         commandLine.removeALLExpressions();
         //reset all transition lines to default
         for (int x = 0; x<instruction.getChildCount();x++){
-            clear = (LinearLayout) instruction.getChildAt(x);
+            currentBlock = (LinearLayout) instruction.getChildAt(x);
             checkCodeLine();
         }
         StatementsLoadSaveFile ls = new StatementsLoadSaveFile(commandLine,fileName);
@@ -326,9 +326,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         commandLine.removeALLExpressions();
         //reset all transition lines to default
         for (int x = 0; x<instruction.getChildCount();x++){
-            clear = (LinearLayout) instruction.getChildAt(x);
+            currentBlock = (LinearLayout) instruction.getChildAt(x);
 
-//            transitionClear = (TextView) clear.getChildAt(0);
+//            transitionClear = (TextView) currentBlock.getChildAt(0);
 //            transitionClear.setText("||");
 
             checkCodeLine();
