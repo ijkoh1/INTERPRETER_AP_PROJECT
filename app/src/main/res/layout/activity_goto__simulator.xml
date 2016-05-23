@@ -43,6 +43,18 @@
                 android:onClick="onClickNewProgram"
                 android:background="@android:color/transparent"
                 android:textColor="#ffffff" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="SAVE"
+                android:id="@+id/saveButton"
+                android:onClick="onClickSave"
+                android:background="@android:color/transparent"
+                android:textColor="#ffffff"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/newProgram"
+                android:layout_toEndOf="@+id/newProgram" />
         </RelativeLayout>
 
         <ScrollView
