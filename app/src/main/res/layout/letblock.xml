@@ -6,10 +6,20 @@
     android:background="#b895ff"
     android:id="@+id/letBlock"
     android:layout_centerInParent="true"
-    android:paddingLeft="20dp"
-    android:paddingTop="10dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="10dp">
+    android:padding="5dp"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:id="@+id/letDelete"
+        android:layout_weight="0.05"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:onClick="onClickDeleteStatement" />
 
     <TextView
         android:layout_width="0dp"
@@ -22,69 +32,71 @@
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="LET"
         android:id="@+id/letText"
         android:layout_gravity="center"
-        android:layout_weight="0.2"
+        android:layout_weight="0.1"
         android:gravity="center" />
+
+    <EditText
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/letVariable"
+        android:background="#ffffff"
+        android:layout_gravity="center"
+        android:singleLine="true"
+        android:layout_weight="0.15" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="="
+        android:id="@+id/letEqual"
+        android:gravity="center"
+        android:layout_weight="0.05" />
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.6"
+        android:layout_weight="0.45"
         android:layout_gravity="center"
         android:id="@+id/letTextArea">
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/letVariable"
-            android:background="#ffffff"
-            android:layout_weight="0.3"
-            android:layout_marginRight="10dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="="
-            android:id="@+id/letEqual" />
-
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/letValue"
             android:background="#ffffff"
             android:layout_weight="0.3"
-            android:layout_marginLeft="10dp" />
+            android:singleLine="true" />
 
-        <EditText
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05"></RelativeLayout>
+
+        <Spinner
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:id="@+id/letOperator"
-            android:background="#ffffff"
-            android:layout_gravity="center|right"
-            android:layout_marginLeft="10dp" />
+            android:layout_weight="0.3"
+            android:background="@color/accent_material_dark" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.05" />
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/letValue2"
             android:background="#ffffff"
             android:layout_weight="0.3"
-            android:layout_marginLeft="10dp" />
+            android:singleLine="true" />
     </LinearLayout>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/letDelete"
-        android:layout_weight="0.1"
-        android:background="@android:color/transparent"
-        android:src="@drawable/abc_ic_clear_mtrl_alpha"
-        android:layout_gravity="center"
-        android:onClick="onClickDeleteStatement" />
 
 
 </LinearLayout>
