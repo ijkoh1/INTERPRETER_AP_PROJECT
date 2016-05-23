@@ -1,14 +1,22 @@
 package thestressteam.spiking;
 
+import android.content.ClipData;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.Console;
@@ -21,7 +29,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     //LinearLayout so that we can add command gui
     LinearLayout from, to, clear;
     //TextView so that we can get the text of the block
-    TextView transitionFrom,transitionTo, transitionClear, console;
+    TextView  console;
     int transitionCount = 0, lineNum;
     //A viewgroup to add command blocks
     ViewGroup instruction;
@@ -33,6 +41,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     private CommandLine commandLine = new CommandLine();
     //An integer to count the number of lines added
     private Integer lineCount = 0;
+
+    String[] operatorList;
+    String[] varList;
 
     /*
     * Author: Hanna
@@ -48,12 +59,20 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         setContentView(R.layout.activity_goto__simulator);
 
         //initialising by clearing display screen and console
-        instruction = (LinearLayout) findViewById(R.id.displayInstructions);
+        instruction = (ViewGroup) findViewById(R.id.displayInstructions);
         if (instruction.getChildCount() > 0) {
             instruction.removeAllViews();
         }
         console = (TextView) findViewById(R.id.console);
         console.setText("");
+
+        //initialise spinner lists
+        operatorList = new String[]{">", "+", "-", "=="};
+        varList = new String[]{"a", "b", "c", "d"};
+
+        //initialise drag and drop on variable View
+        View var = findViewById(R.id.variable);
+        onTouchVariable(var);
     }
 
     /*
@@ -100,14 +119,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 //        console.append("REM block added.\n");
     }
 
-    /*
-    * Author: Hanna & Ivan
+    /**
+    * @author: Hanna & Ivan
     * purpose: Creates a block of GOTO statement with TextBox shown as user inputs
     * params: v = view of the GOTO to detect when it is clicked and when the GOTO button is clicked
     * pre_conditions: Instruction and console view must exist
     * post-conditions: GOTO block statement is created
     * exception handling: None
-    * */
+    */
     public void onClickGoto(View v) {
         //add GOTO block to display screen
         ++lineCount;
@@ -142,6 +161,18 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
 //        console.append("IF block added.\n");
+
+        //initialise spinner
+        Spinner ifOperator = (Spinner)ifBlock.findViewById(R.id.ifOperator);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, operatorList);
+        ifOperator.setAdapter(adapter);
+
+        //initialise drag and drop listener
+        View ifVariable = ifBlock.findViewById(R.id.ifVariable);
+        View ifValue = ifBlock.findViewById(R.id.ifValue);
+        ifVariable.setOnDragListener(new MyDragListener());
+        ifValue.setOnDragListener(new MyDragListener());
+
     }
 
     /*
@@ -164,6 +195,22 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
 //        console.append("LET block added.\n");
+
+
+        //initialise operator Spinner
+        Spinner letOperator = (Spinner)letBlock.findViewById(R.id.letOperator);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, operatorList);
+        letOperator.setAdapter(adapter);
+
+
+        //initialise drag and drop listener
+        View letVariable = letBlock.findViewById(R.id.letVariable);
+        View letValue1 = letBlock.findViewById(R.id.letValue);
+        View letValue2 = letBlock.findViewById(R.id.letValue2);
+        letVariable.setOnDragListener(new MyDragListener());
+        letValue1.setOnDragListener(new MyDragListener());
+        letValue2.setOnDragListener(new MyDragListener());
+
     }
 
     /*
@@ -183,14 +230,18 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
             if (clear.getId() == R.id.letBlock) {
                 EditText variableNameInput = (EditText) clear.findViewById(R.id.letVariable);
                 EditText expressionValue1Input = (EditText) clear.findViewById(R.id.letValue);
-                EditText operatorInput = (EditText) clear.findViewById(R.id.letOperator);
+                //EditText operatorInput = (EditText) clear.findViewById(R.id.letOperator);
                 EditText expressionValue2Input = (EditText) clear.findViewById(R.id.letValue2);
-                if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("") && !operatorInput.getText().toString().equals("") && !expressionValue2Input.getText().toString().equals("")) {
+
+                Spinner operator = (Spinner)findViewById(R.id.letOperator);
+                //&& !operatorInput.getText().toString().equals("")
+                if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("") && !operator.getSelectedItem().equals(null) && !expressionValue2Input.getText().toString().equals("")) {
                     if (Character.isDigit(variableNameInput.getText().toString().charAt(0))) {
                         throw new Exception("Variable must not start with an integer");
                     }
                     Variable variableObj = new Variable(variableNameInput.getText().toString());
-                    Expression expressionObj = new Expression(expressionValue1Input.getText().toString(), operatorInput.getText().toString(), expressionValue2Input.getText().toString());
+                    //operatorInput.getText().toString()
+                    Expression expressionObj = new Expression(expressionValue1Input.getText().toString(), operator.getSelectedItem().toString(), expressionValue2Input.getText().toString());
                     LETStatement letObj = new LETStatement(currentLine, variableObj, expressionObj);
                     cmdObj = new Command(letObj);
                     commandLine.addCommand(cmdObj);
@@ -208,11 +259,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 }
             } else if (clear.getId() == R.id.ifBlock) {
                 EditText expressionLeftSideInput = (EditText) clear.findViewById(R.id.ifVariable);
-                EditText operator = (EditText) clear.findViewById(R.id.ifOperator);
+                //EditText operator = (EditText) clear.findViewById(R.id.ifOperator);
                 EditText expressionRightSideInput = (EditText) clear.findViewById(R.id.ifValue);
                 EditText jumpToLine = (EditText) clear.findViewById(R.id.ifGotoEditText);
-                if (!expressionLeftSideInput.getText().toString().equals("") && !operator.getText().toString().equals("") && !expressionRightSideInput.getText().toString().equals("") && !jumpToLine.getText().toString().equals("")) {
-                    Expression expObj = new Expression(expressionLeftSideInput.getText().toString(), operator.getText().toString(), expressionRightSideInput.getText().toString());
+
+                Spinner operator = (Spinner)findViewById(R.id.ifOperator);
+                if (!expressionLeftSideInput.getText().toString().equals("") && !operator.getSelectedItem().toString().equals(null) && !expressionRightSideInput.getText().toString().equals("") && !jumpToLine.getText().toString().equals("")) {
+                    Expression expObj = new Expression(expressionLeftSideInput.getText().toString(), operator.getSelectedItem().toString(), expressionRightSideInput.getText().toString());
                     GOTOStatement go2Obj = new GOTOStatement(currentLine, Integer.parseInt(jumpToLine.getText().toString()));
                     IFStatement ifObj = new IFStatement(currentLine, expObj, go2Obj);
                     cmdObj = new Command(ifObj);
@@ -340,8 +393,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         instruction.removeView(block);
 
         //update line numbers
-        TextView blockNum = (TextView) block.getChildAt(0);
-        TextView blockName = (TextView) block.getChildAt(1);
+        TextView blockNum = (TextView) block.getChildAt(1);
+        TextView blockName = (TextView) block.getChildAt(2);
         String statement = blockName.getText().toString();
         if (commandLine.getCommandLines().size() > 0 && statement.equals("REM")){
             commandLine.removeExpression(Integer.parseInt(blockNum.getText().toString()));
@@ -350,8 +403,88 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         for (int i = lineCount; i<instruction.getChildCount(); i++){
             lineCount++;
             block = (LinearLayout) instruction.getChildAt(i);
-            blockNum = (TextView) block.getChildAt(0);
+            blockNum = (TextView) block.getChildAt(1);
             blockNum.setText(Integer.toString(lineCount));
         }
     }
+
+
+    public void onTouchVariable(View v) {
+        v.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(v);
+                ClipData data = ClipData.newPlainText("", "");
+                v.startDrag(data, shadow, v, 0);
+                return true;
+            }
+        });
+    }
+
+    public void onLongTouchVariable(View v){
+        v.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                View.DragShadowBuilder shadow = new View.DragShadowBuilder(v);
+                ClipData data = ClipData.newPlainText("", "");
+                v.startDrag(data, shadow, v, 0);
+
+                instruction.setOnDragListener(new removeVarListener());
+                return true;
+            }
+        });
+    }
+
+    public class MyDragListener implements View.OnDragListener {
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            if (event.getAction() == DragEvent.ACTION_DROP) {
+                //initialise variable selection spinner
+                Spinner varSelection = new Spinner(GOTO_SIMULATOR.this);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
+                varSelection.setAdapter(adapter);
+
+                //replace textbox with variable spinner
+                ViewGroup parent = (ViewGroup) v.getParent();
+                int index = parent.indexOfChild(v);
+                //parent.removeView(v);
+                v.setVisibility(View.INVISIBLE);
+                v.setLayoutParams(new LinearLayout.LayoutParams(0,0,0));
+                parent.addView(varSelection,index);
+                onLongTouchVariable(varSelection);
+
+            }
+            return true;
+        }
+    }
+
+    public class removeVarListener implements View.OnDragListener{
+        @Override
+        public boolean onDrag(View v, DragEvent event) {
+            if (event.getAction() == DragEvent.ACTION_DROP) {
+                View dragged = (View) event.getLocalState();
+                ViewGroup parent = (ViewGroup)dragged.getParent();
+                System.out.println(parent.getChildCount());
+                int index = parent.indexOfChild(dragged);
+
+                //View value = new EditText(GOTO_SIMULATOR.this);
+                parent.removeView(dragged);
+                View textbox = parent.getChildAt(index);
+                textbox.setVisibility(View.VISIBLE);
+                textbox.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,0.3f));
+                //parent.addView(value,index);
+                //View edit = findViewById(R.id.ifValue);
+
+                //LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)edit.getLayoutParams();
+                //new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.WRAP_CONTENT,0.1f)\
+                //param.height = LinearLayout.LayoutParams.MATCH_PARENT;
+                //value.setLayoutParams(param);
+                //value.setBackgroundColor(Color.parseColor("#fffff"));
+                System.out.println("DONE");
+            }
+            return true;
+        }
+    }
+
+
 }

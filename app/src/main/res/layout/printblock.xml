@@ -7,23 +7,32 @@
     android:background="#6ee39f"
     android:id="@+id/printBlock"
     android:layout_centerInParent="true"
-    android:paddingLeft="20dp"
-    android:paddingTop="10dp"
-    android:paddingRight="20dp"
-    android:paddingBottom="10dp">
+    android:padding="5dp">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:id="@+id/printDelete"
+        android:layout_weight="0.05"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:onClick="onClickDeleteStatement" />
 
     <TextView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/printTransition"
         android:layout_weight="0.1"
-        android:text="@string/lineNumber"
+        android:text="||"
         android:gravity="center"
         android:layout_gravity="center" />
 
     <TextView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="PRINT"
         android:id="@+id/printText"
         android:layout_gravity="center"
@@ -40,16 +49,6 @@
         android:autoText="false"
         android:singleLine="true"
         android:layout_weight="0.6" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/printDelete"
-        android:layout_weight="0.1"
-        android:background="@android:color/transparent"
-        android:src="@drawable/abc_ic_clear_mtrl_alpha"
-        android:layout_gravity="center"
-        android:onClick="onClickDeleteStatement" />
 
 
 </LinearLayout>
