@@ -1,5 +1,7 @@
 package thestressteam.spiking;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ivan on 5/9/2016.
  */
@@ -41,6 +43,15 @@ public class PRINTStatement extends Statement {
     {
         this.result = dvl.getValue(this.value);
         return dvl;
+    }
+
+    @Override
+    public ArrayList<String> getDetails() {
+        ArrayList<String> details = new ArrayList<String>();
+        details.add(this.currentLine.toString());
+        details.add(this.statementID);
+        details.add(this.value);
+        return details;
     }
 
     /*

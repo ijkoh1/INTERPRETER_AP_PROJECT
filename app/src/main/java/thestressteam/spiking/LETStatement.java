@@ -1,5 +1,6 @@
 package thestressteam.spiking;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -64,6 +65,18 @@ public class LETStatement extends Statement {
         {
             return null;
         }
+    }
+
+    @Override
+    public ArrayList<String> getDetails() {
+        ArrayList<String> details = new ArrayList<String>();
+        details.add(this.currentLine.toString());
+        details.add(this.statementID);
+        details.add(this.variable.getVariableName());
+        details.add(this.expression.getLeftSide());
+        details.add(this.expression.getOperator());
+        details.add(this.expression.getRightSide());
+        return details;
     }
 
     /*

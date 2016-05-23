@@ -63,7 +63,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     * pre_conditions: Instruction and console view must exist and when the PRINT button is clicked
     * post-conditions: PRINT block statement is created
     * exception handling: None
-    * */
+    */
     public void onClickPrint(View v) {
         //add PRINT block to display screen
         ++lineCount;
@@ -236,6 +236,22 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         {
             console.append(String.format("Line %d ERROR: %s\n",currentLine+1,e.getMessage()));
         }
+    }
+
+    public void onClickSave(View v)
+    {
+        String fileName = "bitchPls.txt";
+        instruction = (LinearLayout) findViewById(R.id.displayInstructions);
+        currentLine = 0;
+        commandLine.removeALLExpressions();
+        //reset all transition lines to default
+        for (int x = 0; x<instruction.getChildCount();x++){
+            clear = (LinearLayout) instruction.getChildAt(x);
+            checkCodeLine();
+        }
+        StatementsLoadSaveFile ls = new StatementsLoadSaveFile(commandLine,fileName);
+        ls.saveCode(commandLine.getCommandLines(),fileName,this);
+        ls.loadCode(fileName,this);
     }
 
     /*

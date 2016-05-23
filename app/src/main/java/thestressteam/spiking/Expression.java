@@ -97,6 +97,7 @@ public class Expression {
         return this.rightSide;
     }
 
+    public String getOperator() { return this.operator; }
     /*
     * Author: Ivan
     * purpose: Retrieves the result of the expression

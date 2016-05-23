@@ -1,5 +1,7 @@
 package thestressteam.spiking;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ivan on 5/9/2016.
  * purpose: GOTOStatement class is in charge of storing its parameters and executing the goto statement
@@ -68,6 +70,15 @@ public class GOTOStatement extends Statement{
         return dvl;
     }
 
+    @Override
+    public ArrayList<String> getDetails() {
+        ArrayList<String> details = new ArrayList<String>();
+        details.add(this.currentLine.toString());
+        details.add(this.getStatementID());
+        details.add(this.jumpToLine.toString());
+        return null;
+    }
+
     /*
     * Author: Ivan
     * purpose: Increments and returns the currentLine of the statement
@@ -95,5 +106,10 @@ public class GOTOStatement extends Statement{
     public Integer getCurrentLine()
     {
         return this.currentLine;
+    }
+
+    public String getJumpToLine()
+    {
+        return this.jumpToLine.toString();
     }
 }

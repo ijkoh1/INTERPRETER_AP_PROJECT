@@ -1,5 +1,6 @@
 package thestressteam.spiking;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -57,4 +58,6 @@ public abstract class Statement {
     * exception handling: None
     * */
     public abstract DeclaredVariableList executeRun(DeclaredVariableList dvl);
+
+    public abstract ArrayList<String> getDetails();
 }
