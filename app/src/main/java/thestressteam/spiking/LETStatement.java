@@ -82,6 +82,11 @@ public class LETStatement extends Statement {
         return details;
     }
 
+    @Override
+    public void setLooped(boolean isLooped) {
+        return;
+    }
+
     /*
     * Author: Ivan
     * purpose: Retrieves the name of the statement

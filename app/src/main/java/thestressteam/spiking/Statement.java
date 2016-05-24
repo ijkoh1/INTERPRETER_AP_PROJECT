@@ -60,4 +60,6 @@ public abstract class Statement {
     public abstract DeclaredVariableList executeRun(DeclaredVariableList dvl);
 
     public abstract ArrayList<String> getDetails();
+
+    public abstract void setLooped(boolean isLooped);
 }

@@ -106,7 +106,8 @@ public class GOTO_interpreter{
         sortLine();
         Integer count = 0;
         Integer index = 0;
-        Integer prev_index = 0;
+        Integer prev_index;
+        ArrayList<Statement> gosubStackArray = new ArrayList<>();
         try {
             while (this.running) {
                 if (count > 100)
@@ -157,6 +158,34 @@ public class GOTO_interpreter{
                     if (index.equals(prev_index))
                     {
                         throw new Exception("GOTO cannot go to itself");
+                    }
+                }
+
+                if (statement.getStatementID().equals("GOSUB"))
+                {
+                    index = searchForLineNumber(statement.getJumpToLine());
+                    if (index == null)
+                    {
+                        throw new Exception("GOSUB jumped to an non_existent lineNumber");
+                    }
+                    if (index.equals(prev_index))
+                    {
+                        throw new Exception("GOSUB cannot go to itself");
+                    }
+                    gosubStackArray.add(0,statement);
+                }
+
+                if (statement.getStatementID().equals("RETURN"))
+                {
+                    if (gosubStackArray.size() == 0 || statement.getResult() == 0)
+                    {
+                        throw new Exception("Runtime ERROR");
+                    }
+                    else
+                    {
+                        index = searchForLineNumber(gosubStackArray.get(0).getCurrentLine()) + 1;
+                        gosubStackArray.remove(0);
+                        statement.setLooped(true);
                     }
                 }
 

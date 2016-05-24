@@ -34,7 +34,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     //A viewgroup to add command blocks
     ViewGroup instruction;
     //A view for all the commands available
-    View printBlock, remBlock, gotoBlock,ifBlock, letBlock;
+    View printBlock, remBlock, gotoBlock,ifBlock, letBlock, gosubBlock, returnBlock;
     //An integer to detect number of lines added
     private Integer currentLine = 0;
     //A CommandLine object to store the command lines
@@ -226,6 +226,34 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
     }
 
+    public void onClickGosub(View v) {
+        //add GOTO block to display screen
+        ++lineCount;
+        instruction = (LinearLayout) findViewById(R.id.displayInstructions);
+        gosubBlock = getLayoutInflater().inflate(R.layout.gosubblock,instruction,false);
+        TextView lineNumber = (TextView) gosubBlock.findViewById(R.id.gosubTransition);
+        lineNumber.setText(lineCount.toString());
+        instruction.addView(gosubBlock);
+        transitionCount++;
+        //add text to console indicating user action
+        console = (TextView) findViewById(R.id.console);
+
+        //initialise onFocus listener
+        View gosubEditText = findViewById(R.id.gosubEditText);
+        gosubEditText.setOnFocusChangeListener(new onFocusGOTO());
+    }
+
+    public void onClickReturn(View v) {
+        //add REM block to display screen
+        ++lineCount;
+        instruction = (LinearLayout) findViewById(R.id.displayInstructions);
+        returnBlock = getLayoutInflater().inflate(R.layout.returnblock,instruction,false);
+        TextView lineNumber = (TextView) returnBlock.findViewById(R.id.returnTransition);
+        lineNumber.setText(lineCount.toString());
+        instruction.addView(returnBlock);
+        transitionCount++;
+    }
+
     /*
     * Author: Hanna & Ivan
     * purpose: Reads in the user inputs and creates and adds command into the commandLine variable
@@ -296,6 +324,19 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
                 }
+            } else if (currentBlock.getId() == R.id.gosubBlock) {
+                EditText gosubInput = (EditText) currentBlock.findViewById(R.id.gosubEditText);
+                if (!gosubInput.getText().toString().equals("")) {
+                    GOSUBStatement gosubObj = new GOSUBStatement(currentLine, Integer.parseInt(gosubInput.getText().toString()));
+                    cmdObj = new Command(gosubObj);
+                    commandLine.addCommand(cmdObj);
+                } else {
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                }
+            } else if (currentBlock.getId() == R.id.returnBlock) {
+                RETURNStatement returnObj = new RETURNStatement(currentLine);
+                cmdObj = new Command(returnObj);
+                commandLine.addCommand(cmdObj);
             }
         }
         catch (Exception e)

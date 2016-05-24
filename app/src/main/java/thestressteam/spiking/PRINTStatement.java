@@ -54,6 +54,11 @@ public class PRINTStatement extends Statement {
         return details;
     }
 
+    @Override
+    public void setLooped(boolean isLooped) {
+        return;
+    }
+
     /*
     * Author: Ivan
     * purpose: Retrieves the result of the statement

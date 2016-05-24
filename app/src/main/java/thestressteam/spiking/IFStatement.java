@@ -87,6 +87,11 @@ public class IFStatement extends Statement{
         return details;
     }
 
+    @Override
+    public void setLooped(boolean isLooped) {
+        return;
+    }
+
     /*
     * Author: Ivan
     * purpose: Increments and returns the currentLine of the statement
