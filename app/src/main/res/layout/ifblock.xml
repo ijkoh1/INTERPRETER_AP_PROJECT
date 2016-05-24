@@ -51,10 +51,10 @@
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/ifVariable"
             android:background="#ffffff"
-            android:layout_gravity="center|right"
+            android:layout_gravity="center"
             android:singleLine="true"
             android:layout_weight="0.3" />
 
@@ -65,7 +65,7 @@
 
         <Spinner
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/ifOperator"
             android:layout_weight="0.3"
             android:background="@color/material_deep_teal_200" />
@@ -77,10 +77,10 @@
 
         <EditText
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:id="@+id/ifValue"
             android:background="#ffffff"
-            android:layout_gravity="center|right"
+            android:layout_gravity="center"
             android:singleLine="true"
             android:layout_weight="0.3" />
     </LinearLayout>
@@ -96,7 +96,7 @@
 
     <EditText
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/ifGotoEditText"

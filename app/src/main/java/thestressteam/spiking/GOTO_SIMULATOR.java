@@ -1,11 +1,14 @@
 package thestressteam.spiking;
 
 import android.content.ClipData;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -13,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -43,7 +47,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     private Integer lineCount = 0;
 
     String[] operatorList;
-    String[] varList;
+    ArrayList<String> varList;
+    Spinner varSelection;
+    private String newVarName;
 
     /*
     * Author: Hanna
@@ -68,7 +74,12 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
         //initialise spinner lists
         operatorList = new String[]{">", "+", "-", "=="};
-        varList = new String[]{"a", "b", "c", "d"};
+        varList = new ArrayList<String>();
+        varList.add("a");
+        varList.add("b");
+        varList.add("c");
+        varList.add("d");
+        varList.add("add item");
 
         //initialise drag and drop on variable View
         View var = findViewById(R.id.variable);
@@ -102,6 +113,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
 //        console.append("PRINT block added.\n");
+
+        //initialise dragand drop spinner
+        View printValue = printBlock.findViewById(R.id.printEditText);
+        printValue.setOnDragListener(new MyDragListener());
     }
 
     /*
@@ -147,7 +162,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         console = (TextView) findViewById(R.id.console);
 
         //initialise onFocus listener
-        View gotoEditText = findViewById(R.id.gotoEditText);
+        View gotoEditText = gotoBlock.findViewById(R.id.gotoEditText);
         gotoEditText.setOnFocusChangeListener(new onFocusGOTO());
     }
 
@@ -183,7 +198,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         ifVariable.setOnDragListener(new MyDragListener());
         ifValue.setOnDragListener(new MyDragListener());
         //initialise onFocus listener
-        View ifGotoEditText = findViewById(R.id.ifGotoEditText);
+        View ifGotoEditText = ifBlock.findViewById(R.id.ifGotoEditText);
         ifGotoEditText.setOnFocusChangeListener(new onFocusGOTO());
 
     }
@@ -509,9 +524,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
             //View dragged = (View) event.getLocalState();
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 //initialise variable selection spinner
-                Spinner varSelection = new Spinner(GOTO_SIMULATOR.this);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_item, varList);
+                varSelection = new Spinner(GOTO_SIMULATOR.this);
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
                 varSelection.setAdapter(adapter);
+                varSelection.setOnItemSelectedListener(new onSelectNewVar());
 
                 //"replace" textbox with variable spinner (make textbox invisible)
                 ViewGroup parent = (ViewGroup) v.getParent();
@@ -583,6 +599,53 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
                 }
             }
+        }
+    }
+
+
+    public class onSelectNewVar implements AdapterView.OnItemSelectedListener{
+        @Override
+        public void onItemSelected(final AdapterView<?> adapter,View v, int position, long arg3){
+            if (adapter.getSelectedItem().toString().equals("add item")){
+                //show an alert dialog asking for a new variable name
+                AlertDialog.Builder newVarDialog = new AlertDialog.Builder(GOTO_SIMULATOR.this);
+                newVarDialog.setTitle("New Variable");
+                newVarDialog.setMessage("Enter a new variable name: ");
+
+                // Set up the input
+                final EditText input = new EditText(GOTO_SIMULATOR.this);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                newVarDialog.setView(input);
+
+
+
+                // Set up the buttons
+                newVarDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        newVarName = input.getText().toString();
+                        int newVarPos = varList.size()-1;
+                        varList.add(newVarPos,newVarName);
+                        System.out.println(adapter.getCount());
+                        adapter.setSelection(0);
+                        adapter.setSelection(newVarPos);
+                    }
+                });
+                newVarDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                newVarDialog.show();
+
+
+            }
+        }
+        @Override
+        public void onNothingSelected(AdapterView parent){
+
         }
     }
 
