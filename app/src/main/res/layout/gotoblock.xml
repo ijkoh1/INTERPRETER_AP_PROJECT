@@ -40,7 +40,7 @@
 
     <EditText
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/gotoEditText"
