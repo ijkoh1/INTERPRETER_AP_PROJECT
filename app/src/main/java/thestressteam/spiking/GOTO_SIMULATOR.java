@@ -338,12 +338,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         for (int x = 0; x<instruction.getChildCount();x++){
             currentBlock = (LinearLayout) instruction.getChildAt(x);
 
-<<<<<<< HEAD
-=======
-//            transitionClear = (TextView) currentBlock.getChildAt(0);
-//            transitionClear.setText("||");
-
->>>>>>> origin/master
             checkCodeLine();
         }
 
