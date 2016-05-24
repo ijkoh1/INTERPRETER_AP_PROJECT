@@ -13,14 +13,18 @@ import java.util.HashMap;
 public class GOTO_interpreter{
     //An integer to store the current line number, to indicate which statement we are reading
     private Integer currentLineNumber;
-    //An integer to store the previous line number to catch if the goto jumps to itself
-    private Integer previousLineNumber;
+
     //An array list of strings to store the results from executing command lines
     private ArrayList<String> results;
+
     //A CommandLine object to store the list of command objects
     private CommandLine commandLine;
+
+    private ArrayList<Command> currentCommand;
+
     //A DeclaredVariableList object to use the methods from the object such as declaring, assigning a variable
     private DeclaredVariableList variablesDeclared;
+
     //A boolean to indicate whether the command should keep on running and iterating to the next command
     private Boolean running;
 
@@ -38,7 +42,52 @@ public class GOTO_interpreter{
         this.commandLine = commandLine;
         this.results = new ArrayList<String>();
         this.variablesDeclared = new DeclaredVariableList();
+        this.currentCommand = commandLine.getCommandLines();
         this.running = true;
+    }
+
+    public void sortLine()
+    {
+        if (currentCommand.size() < 2)
+        {
+            return;
+        }
+        Integer num1 = currentCommand.get(0).getStatement().getCurrentLine();
+        Integer num2 = currentCommand.get(1).getStatement().getCurrentLine();
+        if (num1 > num2)
+        {
+            Command tmp = currentCommand.get(0);
+            currentCommand.set(0,currentCommand.get(1));
+            currentCommand.set(1,tmp);
+        }
+        for (int mark = 2; mark < currentCommand.size(); mark++)
+        {
+            for (int k = 0; k < mark; k++)
+            {
+                num1 = currentCommand.get(k).getStatement().getCurrentLine();
+                num2 = currentCommand.get(mark).getStatement().getCurrentLine();
+                if (num1 > num2)
+                {
+                    Command tmp = currentCommand.get(k);
+                    currentCommand.set(k,currentCommand.get(mark));
+                    currentCommand.set(mark,tmp);
+                }
+            }
+        }
+    }
+
+    public Integer searchForLineNumber(Integer lineNumberToBeFound)
+    {
+        Integer indexNotFound = null;
+        for (int i = 0; i < currentCommand.size(); i++)
+        {
+            Integer lineNumber = currentCommand.get(i).getStatement().getCurrentLine();
+            if (lineNumberToBeFound.equals(lineNumber))
+            {
+                return i;
+            }
+        }
+        return indexNotFound;
     }
 
     /*
@@ -54,18 +103,22 @@ public class GOTO_interpreter{
     * */
     public void readAllCode()
     {
-        ArrayList<Command> currentCommand = commandLine.getCommandLines();
+        sortLine();
         Integer count = 0;
+        Integer index = 0;
+        Integer prev_index = 0;
         try {
             while (this.running) {
                 if (count > 100)
                 {
                     throw new Exception("Runned too much");
                 }
-                if (this.currentLineNumber > currentCommand.size()) {
+                if (index > currentCommand.size()) {
                     throw new Exception("GOTO exceeded the lineNumber");
                 }
-                Statement statement = currentCommand.get(this.currentLineNumber).getStatement();
+                Statement statement = currentCommand.get(index).getStatement();
+                System.out.println(statement.getStatementID());
+                this.currentLineNumber = statement.getCurrentLine();
                 if (statement.getStatementID().equals("GOTO") || statement.getStatementID().equals("IF")) {
                     this.running = true;
                 }
@@ -75,20 +128,43 @@ public class GOTO_interpreter{
                 {
                     throw new Exception("Invalid Input.");
                 }
-                this.previousLineNumber = this.currentLineNumber;
-                this.currentLineNumber = statement.nextLine();
+                prev_index = index;
+                index += 1;
 //                writeResults("After execution " + this.currentLineNumber);
                 if (statement.getStatementID().equals("GOTO"))
                 {
-                    if (this.currentLineNumber.equals(previousLineNumber))
+                    index = searchForLineNumber(statement.getJumpToLine());
+                    if (index == null)
+                    {
+                        throw new Exception("GOTO jumped to an non_existent lineNumber");
+                    }
+                    if (index.equals(prev_index))
                     {
                         throw new Exception("GOTO cannot go to itself");
                     }
                 }
+
+                if (statement.getStatementID().equals("IF"))
+                {
+                    if (statement.getResult() != 0)
+                    {
+                        index = searchForLineNumber(statement.getJumpToLine());
+                    }
+                    if (index == null)
+                    {
+                        throw new Exception("GOTO jumped to an non_existent lineNumber");
+                    }
+                    if (index.equals(prev_index))
+                    {
+                        throw new Exception("GOTO cannot go to itself");
+                    }
+                }
+
                 if (statement.getStatementID().equals("PRINT")) {
                     writeResults(statement.getResult().toString());
                 }
-                if (this.currentLineNumber.equals(currentCommand.size())) {
+
+                if (index.equals(currentCommand.size())) {
                     this.running = false;
                 }
                 count++;
@@ -97,7 +173,7 @@ public class GOTO_interpreter{
         catch (Exception e)
         {
             results.clear();
-            writeResults("Stopped at Line " + (previousLineNumber+1) + " ERROR: " + e.getMessage());
+            writeResults("Stopped at Line " + (this.currentLineNumber) + " ERROR: " + e.getMessage());
         }
     }
 

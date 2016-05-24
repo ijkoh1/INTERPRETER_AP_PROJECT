@@ -65,12 +65,14 @@ public class DeclaredVariableList {
     * post-conditions: variable is added into the variableDict
     * exceptions handling: None
     * */
-    public void declareVariable(String variableName)
+    public boolean declareVariable(String variableName)
     {
         if (!variableDict.containsKey(variableName))
         {
             variableDict.put(variableName, null);
+            return false;
         }
+        return true;
     }
 
     /*

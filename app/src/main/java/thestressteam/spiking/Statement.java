@@ -11,16 +11,6 @@ import java.util.HashMap;
 public abstract class Statement {
     /*
     * Author: Ivan
-    * purpose: An abstract method which increments the currentLineNumber
-    * params: None
-    * pre_conditions: None
-    * post-conditions: Returns the currentLineNumber
-    * exception handling: None
-    * */
-    public abstract Integer nextLine();
-
-    /*
-    * Author: Ivan
     * purpose: An abstract method to get the name of the statement
     * params: None
     * pre_conditions: A statement must exists
@@ -48,6 +38,16 @@ public abstract class Statement {
     * exception handling: None
     * */
     public abstract Integer getCurrentLine();
+
+    /*
+    * Author: Ivan
+    * purpose: An abstract method which grabs the jumpToNextLine
+    * params: None
+    * pre_conditions: None
+    * post-conditions: Returns the jumpToLineNumber
+    * exception handling: None
+    * */
+    public abstract Integer getJumpToLine();
 
     /*
     * Author: Ivan

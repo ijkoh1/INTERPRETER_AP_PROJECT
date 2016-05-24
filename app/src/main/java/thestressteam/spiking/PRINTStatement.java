@@ -85,12 +85,12 @@ public class PRINTStatement extends Statement {
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of currentLine
     * */
-    @Override
-    public Integer nextLine()
-    {
-        Integer nextLineNumber = this.currentLine + 1;
-        return nextLineNumber;
-    }
+//    @Override
+//    public Integer nextLine()
+//    {
+//        Integer nextLineNumber = this.currentLine + 1;
+//        return nextLineNumber;
+//    }
 
     /*
     * Author: Ivan
@@ -103,5 +103,10 @@ public class PRINTStatement extends Statement {
     public Integer getCurrentLine()
     {
         return currentLine;
+    }
+
+    @Override
+    public Integer getJumpToLine() {
+        return null;
     }
 }

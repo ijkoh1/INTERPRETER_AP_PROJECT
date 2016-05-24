@@ -48,6 +48,7 @@ public class LETStatement extends Statement {
         dvl.declareVariable(variable.getVariableName());
         Integer rightSide = dvl.getValue((expression.getRightSide()));
         Integer leftSide = dvl.getValue((expression.getLeftSide()));
+//        System.out.println("LEFT: " + leftSide + " EXP: " + expression.getOperator() + " RIGHT: " + rightSide);
         try
         {
             if (rightSide == null || leftSide == null){
@@ -59,6 +60,8 @@ public class LETStatement extends Statement {
                 throw new Exception("Invalid operation given");
             }
             dvl.assgnVariable(variable.getVariableName(),value);
+//            System.out.println(variable.getVariableName() + value);
+//            System.out.println(dvl.getValue("x"));
             return dvl;
         }
         catch (Exception e)
@@ -110,11 +113,11 @@ public class LETStatement extends Statement {
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of currentLine
     * */
-    @Override
-    public Integer nextLine() {
-        Integer nextLineNumber = this.currentLine + 1;
-        return nextLineNumber;
-    }
+//    @Override
+//    public Integer nextLine() {
+//        Integer nextLineNumber = this.currentLine + 1;
+//        return nextLineNumber;
+//    }
 
     /*
     * Author: Ivan
@@ -126,5 +129,10 @@ public class LETStatement extends Statement {
     @Override
     public Integer getCurrentLine() {
         return this.currentLine;
+    }
+
+    @Override
+    public Integer getJumpToLine() {
+        return null;
     }
 }

@@ -83,7 +83,7 @@ public class IFStatement extends Statement{
         details.add(this.expression.getLeftSide());
         details.add(this.expression.getOperator());
         details.add(this.expression.getRightSide());
-        details.add(this.gotoStatement.getJumpToLine());
+        details.add(this.gotoStatement.getJumpToLine().toString());
         return details;
     }
 
@@ -95,15 +95,15 @@ public class IFStatement extends Statement{
     * post-conditions: Returns the edited state of currentLine
     * exception handling: None
     * */
-    @Override
-    public Integer nextLine() {
-        Integer nextLineNumber = this.currentLine + 1;
-        if (this.result != 0)
-        {
-            nextLineNumber = this.gotoStatement.nextLine();
-        }
-        return nextLineNumber;
-    }
+//    @Override
+//    public Integer nextLine() {
+//        Integer nextLineNumber = this.currentLine + 1;
+//        if (this.result != 0)
+//        {
+//            nextLineNumber = this.gotoStatement.nextLine();
+//        }
+//        return nextLineNumber;
+//    }
 
     /*
     * Author: Ivan
@@ -118,6 +118,11 @@ public class IFStatement extends Statement{
         return this.currentLine;
     }
 
+    @Override
+    public Integer getJumpToLine() {
+        return this.gotoStatement.getJumpToLine();
+    }
+
     /*
     * Author: Ivan
     * purpose: Retrieves the result of the statement
@@ -128,6 +133,6 @@ public class IFStatement extends Statement{
     * */
     @Override
     public Integer getResult() {
-        return null;
+        return this.result;
     }
 }
