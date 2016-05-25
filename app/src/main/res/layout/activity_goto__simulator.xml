@@ -176,13 +176,20 @@
                 android:clickable="true" />
 
             <RelativeLayout
-                android:layout_width="20dp"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:background="#db975b"
+                android:background="#a9b2de"
                 android:id="@+id/variable"
                 android:layout_weight="0.2"
-                android:layout_gravity="center"
-                android:layout_margin="0.05dp"></RelativeLayout>
+                android:layout_gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VARIABLE"
+                    android:id="@+id/variableText"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
         </LinearLayout>
 
         <ScrollView

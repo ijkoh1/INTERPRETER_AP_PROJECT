@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -50,6 +51,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     ArrayList<String> varList;
     Spinner varSelection;
     private String newVarName;
+    int widthDP;
 
     /*
     * Author: Hanna
@@ -75,11 +77,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         //initialise spinner lists
         operatorList = new String[]{">", "+", "-", "=="};
         varList = new ArrayList<String>();
-        varList.add("a");
-        varList.add("b");
-        varList.add("c");
-        varList.add("d");
-        varList.add("add item");
+        varList.add("");
+        varList.add("Add New");
 
         //initialise drag and drop on variable View
         View var = findViewById(R.id.variable);
@@ -88,6 +87,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         //initialise listeners
         View displayScroll = findViewById(R.id.displayScroll);
         displayScroll.setOnDragListener(new removeVarListener());
+
+        //width of every textbox
+        widthDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics());
 
 
 
@@ -189,7 +191,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
         //initialise spinner
         Spinner ifOperator = (Spinner)ifBlock.findViewById(R.id.ifOperator);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, operatorList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.multiline_spinner_dropdown, operatorList);
         ifOperator.setAdapter(adapter);
 
         //initialise drag and drop listener
@@ -495,7 +497,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
-
+    //When adding variable dropdown to statement
     public void onTouchVariable(View v) {
         v.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -508,6 +510,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         });
     }
 
+    //When removing variable dropdown from statement
     public void onLongTouchVariable(View v){
         v.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -522,23 +525,25 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         });
     }
 
-    float textboxWeight;
+    //When adding variable dropdown to statement
     public class MyDragListener implements View.OnDragListener {
         @Override
         public boolean onDrag(View v, DragEvent event) {
-            //View dragged = (View) event.getLocalState();
             if (event.getAction() == DragEvent.ACTION_DROP) {
                 //initialise variable selection spinner
                 varSelection = new Spinner(GOTO_SIMULATOR.this);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
                 varSelection.setAdapter(adapter);
+                ViewGroup.LayoutParams param = new ViewGroup.LayoutParams(70,ViewGroup.LayoutParams.MATCH_PARENT);
+                param.width = widthDP;
+                varSelection.setLayoutParams(param);
                 varSelection.setOnItemSelectedListener(new onSelectNewVar());
 
                 //"replace" textbox with variable spinner (make textbox invisible)
                 ViewGroup parent = (ViewGroup) v.getParent();
                 int index = parent.indexOfChild(v);
                 v.setVisibility(View.INVISIBLE);
-                v.setLayoutParams(new LinearLayout.LayoutParams(0,0,0));
+                v.setLayoutParams(new LinearLayout.LayoutParams(0,0));
                 parent.addView(varSelection,index);
                 onLongTouchVariable(varSelection);
 
@@ -547,6 +552,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
+    //When removing variable dropdown from statement
     public class removeVarListener implements View.OnDragListener{
         @Override
         public boolean onDrag(View v, DragEvent event) {
@@ -561,29 +567,23 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     parent.removeView(dragged);
                     View textbox = parent.getChildAt(index);
                     textbox.setVisibility(View.VISIBLE);
-                    if (!textbox.getResources().getResourceName(textbox.getId()).equals("letVariable")){
-                        textbox.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,0.3f));
-                    }else{
-                        textbox.setLayoutParams(new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,0.15f));
-                    }
-
+                    textbox.setLayoutParams(new LinearLayout.LayoutParams(widthDP,LinearLayout.LayoutParams.MATCH_PARENT));
                 }
             }
             return true;
         }
     }
 
+
     public class touchGOTO implements View.OnClickListener{
         @Override
         public void onClick(View v){
-            ViewGroup line = (ViewGroup) v;
             int gotoLine = instruction.indexOfChild(v)+1;
-            //System.out.println(gotoLine);
             EditText textbox = (EditText) getCurrentFocus();
-
             ViewGroup parent = (ViewGroup)textbox.getParent();
             int textboxIndex = parent.indexOfChild(textbox);
-            if (parent.getChildAt(textboxIndex-1) instanceof TextView){ //if its a TextView
+            //listener only reacts when its a GOTO textbox
+            if (parent.getChildAt(textboxIndex-1) instanceof TextView){
                 TextView blockName = (TextView)parent.getChildAt(textboxIndex-1); //get the name beside the Edittext
                 System.out.println(blockName.getText().toString());
                 if(blockName.getText().toString().equals("GOTO")) {
@@ -593,6 +593,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
+    //Initialises line touch listener whenever a textbox is focused
     public class onFocusGOTO implements EditText.OnFocusChangeListener{
         @Override
         public void onFocusChange(View v, boolean hasFocus) {
@@ -606,11 +607,11 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
-
+    //When user selects variable
     public class onSelectNewVar implements AdapterView.OnItemSelectedListener{
         @Override
         public void onItemSelected(final AdapterView<?> adapter,View v, int position, long arg3){
-            if (adapter.getSelectedItem().toString().equals("add item")){
+            if (adapter.getSelectedItem().toString().equals("Add New")){
                 //show an alert dialog asking for a new variable name
                 AlertDialog.Builder newVarDialog = new AlertDialog.Builder(GOTO_SIMULATOR.this);
                 newVarDialog.setTitle("New Variable");
@@ -622,8 +623,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 newVarDialog.setView(input);
 
-
-
                 // Set up the buttons
                 newVarDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -631,20 +630,19 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                         newVarName = input.getText().toString();
                         int newVarPos = varList.size()-1;
                         varList.add(newVarPos,newVarName);
-                        System.out.println(adapter.getCount());
-                        adapter.setSelection(0);
+                        ArrayAdapter<String> newadapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
+                        varSelection.setAdapter(newadapter);
                         adapter.setSelection(newVarPos);
                     }
                 });
                 newVarDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        varSelection.setSelection(0);
                         dialog.cancel();
                     }
                 });
                 newVarDialog.show();
-
-
             }
         }
         @Override

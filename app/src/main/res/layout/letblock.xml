@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="60dp"
 
     android:background="#b895ff"
     android:id="@+id/letBlock"
     android:layout_centerInParent="true"
-    android:padding="5dp"
+    android:padding="10dp"
     android:orientation="horizontal">
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:text="X"
         android:id="@+id/letDelete"
-        android:layout_weight="0.05"
         android:layout_gravity="center"
         android:clickable="true"
         android:gravity="center"
@@ -22,79 +21,69 @@
         android:onClick="onClickDeleteStatement" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:id="@+id/letTransition"
-        android:layout_weight="0.1"
         android:text="||"
         android:gravity="center"
         android:layout_gravity="center" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:text="LET"
         android:id="@+id/letText"
         android:layout_gravity="center"
-        android:layout_weight="0.1"
         android:gravity="center" />
 
     <EditText
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="fill_parent"
         android:id="@+id/letVariable"
         android:background="#ffffff"
         android:layout_gravity="center"
-        android:singleLine="true"
-        android:layout_weight="0.15" />
+        android:singleLine="true" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:text="="
         android:id="@+id/letEqual"
-        android:gravity="center"
-        android:layout_weight="0.05" />
+        android:gravity="center" />
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="0.45"
         android:layout_gravity="center"
         android:id="@+id/letTextArea">
 
         <EditText
-            android:layout_width="0dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:id="@+id/letValue"
             android:background="#ffffff"
-            android:layout_weight="0.3"
             android:singleLine="true" />
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.05"></RelativeLayout>
+            android:layout_width="10dp"
+            android:layout_height="match_parent"></RelativeLayout>
 
         <Spinner
-            android:layout_width="0dp"
+            android:layout_width="30dp"
             android:layout_height="fill_parent"
             android:id="@+id/letOperator"
-            android:layout_weight="0.3"
             android:background="@color/accent_material_dark" />
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.05" />
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
 
         <EditText
-            android:layout_width="0dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:id="@+id/letValue2"
             android:background="#ffffff"
-            android:layout_weight="0.3"
             android:singleLine="true" />
     </LinearLayout>
 

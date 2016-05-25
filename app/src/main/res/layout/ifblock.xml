@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="60dp"
 
     android:background="#ffb98d"
     android:id="@+id/ifBlock"
     android:layout_centerInParent="true"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:padding="10dp">
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:text="X"
         android:id="@+id/ifDelete"
-        android:layout_weight="0.05"
         android:layout_gravity="center"
         android:clickable="true"
         android:gravity="center"
@@ -24,83 +20,75 @@
         android:onClick="onClickDeleteStatement" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:id="@+id/ifTransition"
-        android:layout_weight="0.1"
         android:text="||"
         android:gravity="center"
         android:layout_gravity="center" />
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:text="IF"
         android:id="@+id/ifText"
         android:layout_gravity="center"
-        android:layout_weight="0.1"
         android:gravity="center" />
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="0.45"
         android:layout_gravity="center"
         android:id="@+id/ifTextArea">
 
         <EditText
-            android:layout_width="0dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:id="@+id/ifVariable"
             android:background="#ffffff"
             android:layout_gravity="center"
-            android:singleLine="true"
-            android:layout_weight="0.3" />
+            android:singleLine="true" />
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="10dp"
             android:layout_height="match_parent"
             android:layout_weight="0.05"></RelativeLayout>
 
         <Spinner
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="fill_parent"
             android:id="@+id/ifOperator"
-            android:layout_weight="0.3"
             android:background="@color/material_deep_teal_200" />
 
         <RelativeLayout
-            android:layout_width="0dp"
+            android:layout_width="10dp"
             android:layout_height="match_parent"
             android:layout_weight="0.05" />
 
         <EditText
-            android:layout_width="0dp"
+            android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:id="@+id/ifValue"
             android:background="#ffffff"
             android:layout_gravity="center"
-            android:singleLine="true"
-            android:layout_weight="0.3" />
+            android:singleLine="true" />
     </LinearLayout>
 
     <TextView
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="match_parent"
         android:text="GOTO"
         android:id="@+id/ifGotoText"
         android:layout_gravity="center"
-        android:layout_weight="0.15"
         android:gravity="center" />
 
     <EditText
-        android:layout_width="0dp"
+        android:layout_width="70dp"
         android:layout_height="fill_parent"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/ifGotoEditText"
-        android:layout_weight="0.15"
         android:background="#ffffff"
         android:layout_gravity="center"
         android:singleLine="true" />
