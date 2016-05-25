@@ -75,7 +75,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         console.setText("");
 
         //initialise spinner lists
-        operatorList = new String[]{">", "+", "-", "=="};
+        operatorList = new String[]{"+", "-", "*", "**", "/", "%", "==", "!=", "<", "<=", ">", ">="};
         varList = new ArrayList<String>();
         varList.add("");
         varList.add("Add New");
@@ -305,7 +305,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     cmdObj = new Command(letObj);
                     commandLine.addCommand(cmdObj);
                 } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
             } else if (currentBlock.getId() == R.id.gotoBlock) {
                 EditText gotoLineInput = (EditText) currentBlock.findViewById(R.id.gotoEditText);
@@ -314,7 +314,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     cmdObj = new Command(gotoObj);
                     commandLine.addCommand(cmdObj);
                 } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
             } else if (currentBlock.getId() == R.id.ifBlock) {
                 EditText expressionLeftSideInput = (EditText) currentBlock.findViewById(R.id.ifVariable);
@@ -330,7 +330,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     cmdObj = new Command(ifObj);
                     commandLine.addCommand(cmdObj);
                 } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
             } else if (currentBlock.getId() == R.id.printBlock) {
                 EditText printInput = (EditText) currentBlock.findViewById(R.id.printEditText);
@@ -339,7 +339,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     cmdObj = new Command(printObj);
                     commandLine.addCommand(cmdObj);
                 } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
             } else if (currentBlock.getId() == R.id.gosubBlock) {
                 EditText gosubInput = (EditText) currentBlock.findViewById(R.id.gosubEditText);
@@ -348,7 +348,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     cmdObj = new Command(gosubObj);
                     commandLine.addCommand(cmdObj);
                 } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine + 1));
+                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
             } else if (currentBlock.getId() == R.id.returnBlock) {
                 RETURNStatement returnObj = new RETURNStatement(currentLine);
@@ -404,17 +404,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
             checkCodeLine();
         }
 
-//        ArrayList<Command> cmLine = commandLine.getCommandLines();
-//        DeclaredVariableList dvl = new DeclaredVariableList();
-//        Statement let = cmLine.get(0).getStatement();
-//        dvl = let.executeRun(dvl);
-//        console.append(String.format("result: %s\n", dvl.getValue("w")));
-//        console.append(String.format("line: %s\n", let.getCurrentLine()));
-
-//        for (int i=0; i<cmLine.size(); i++){
-//            Statement st = cmLine.get(i).getStatement();
-//            console.append(String.format("Statement: %s\n",st.getStatementID()));
-//        }
         if (commandLine.getCommandLines().size() != 0)
         {
                 GOTO_interpreter gotoInterpreter = new GOTO_interpreter(commandLine);

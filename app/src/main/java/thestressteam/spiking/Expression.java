@@ -52,8 +52,32 @@ public class Expression {
         else if(op.equals("-")){
             num3 = num1Value-num2Value;
         }
+        else if(op.equals("/")) {
+            num3 = num1Value/num2Value;
+        }
+        else if(op.equals("%")) {
+            num3 = num1Value%num2Value;
+        }
+        else if(op.equals("*")) {
+            num3 = num1Value*num2Value;
+        }
+        else if(op.equals("**")) {
+            num3 = 1;
+            for (int i = 0; i < num2Value; i++)
+            {
+                num3 *= num1Value;
+            }
+        }
         else if (op.equals("==")){
-            if (num1Value == num2Value){
+            if (num1Value.equals(num2Value)){
+                num3 = 1;
+            }
+            else{
+                num3 = 0;
+            }
+        }
+        else if (op.equals("!=")){
+            if (!num1Value.equals(num2Value)){
                 num3 = 1;
             }
             else{
@@ -62,6 +86,30 @@ public class Expression {
         }
         else if(op.equals(">")) {
             if (num1Value > num2Value) {
+                num3 = 1;
+            }
+            else{
+                num3 = 0;
+            }
+        }
+        else if(op.equals(">=")) {
+            if (num1Value >= num2Value) {
+                num3 = 1;
+            }
+            else{
+                num3 = 0;
+            }
+        }
+        else if(op.equals("<")) {
+            if (num1Value < num2Value) {
+                num3 = 1;
+            }
+            else{
+                num3 = 0;
+            }
+        }
+        else if(op.equals("<=")) {
+            if (num1Value <= num2Value) {
                 num3 = 1;
             }
             else{

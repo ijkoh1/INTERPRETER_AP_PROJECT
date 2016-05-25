@@ -17,9 +17,7 @@ public class GOTO_interpreter{
     //An array list of strings to store the results from executing command lines
     private ArrayList<String> results;
 
-    //A CommandLine object to store the list of command objects
-    private CommandLine commandLine;
-
+    //An arrayList to store the list of commands the user had input
     private ArrayList<Command> currentCommand;
 
     //A DeclaredVariableList object to use the methods from the object such as declaring, assigning a variable
@@ -28,24 +26,31 @@ public class GOTO_interpreter{
     //A boolean to indicate whether the command should keep on running and iterating to the next command
     private Boolean running;
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Initialize the variablesDeclared, currentLineNumber and results
     * params: commandLine = An array command added in the instruction view
     * pre_conditions: An array of commands, commandLine
     * post-conditions: variablesDeclared, currentLineNumber and results are initialized
     * exception handling: None
-    * */
+    */
     public GOTO_interpreter(CommandLine commandLine)
     {
         this.currentLineNumber = 0;
-        this.commandLine = commandLine;
         this.results = new ArrayList<String>();
         this.variablesDeclared = new DeclaredVariableList();
         this.currentCommand = commandLine.getCommandLines();
         this.running = true;
     }
 
+    /**
+     * Author: Ivan
+     * purpose: Sorts the commandLine into from 1st to last line to run
+     * params: None
+     * pre_conditions: An array of commands, commandLine
+     * post-conditions: the commandLine are sorted
+     * exception handling: None
+     */
     public void sortLine()
     {
         if (currentCommand.size() < 2)
@@ -76,6 +81,14 @@ public class GOTO_interpreter{
         }
     }
 
+    /**
+     * Author: Ivan
+     * purpose: Searches for the lineNumber of the command and returns the index of the commandList
+     * params: None
+     * pre_conditions: An array of commands, commandLine
+     * post-conditions: An index is returned if found, else returns a null
+     * exception handling: None
+     */
     public Integer searchForLineNumber(Integer lineNumberToBeFound)
     {
         Integer indexNotFound = null;
@@ -103,36 +116,39 @@ public class GOTO_interpreter{
     * */
     public void readAllCode()
     {
+        //Sorts the commandList
         sortLine();
+        //A counter to detect the number of run loops
         Integer count = 0;
+        //A index to point to the commandList
         Integer index = 0;
+        //A previous index to detect a jump to itself
         Integer prev_index;
+        //An array to store the gosub statement so that we know which gosub to return to
         ArrayList<Statement> gosubStackArray = new ArrayList<>();
+        //An array to store the index of the gosub so that we can know which line the gosub to return
         ArrayList<Integer> matchingIDList = new ArrayList<>();
-        Integer matchID = 0;
         try {
             while (this.running) {
+                //detects too many loops
                 if (count > 100)
                 {
                     throw new Exception("Runned too much");
                 }
-                if (index > currentCommand.size()) {
-                    throw new Exception("GOTO exceeded the lineNumber");
-                }
+
                 Statement statement = currentCommand.get(index).getStatement();
                 System.out.println(statement.getStatementID());
                 this.currentLineNumber = statement.getCurrentLine();
                 if (statement.getStatementID().equals("GOTO") || statement.getStatementID().equals("IF")) {
                     this.running = true;
                 }
-//                writeResults(statement.getStatementID() + " lineNumber ");
                 variablesDeclared = statement.executeRun(variablesDeclared);
+                //This happens only when user entered an undeclared variable
                 if (variablesDeclared == null)
                 {
                     throw new Exception("Invalid Input.");
                 }
                 prev_index = index;
-//                writeResults("After execution " + this.currentLineNumber);
                 if (statement.getStatementID().equals("GOTO"))
                 {
                     index = searchForLineNumber(statement.getJumpToLine());
@@ -168,8 +184,10 @@ public class GOTO_interpreter{
 
                 else if (statement.getStatementID().equals("GOSUB"))
                 {
+                    //This happends when it is a new gosub we found during runtime
                     if (statement.getResult() == null)
                     {
+                        //A matchingID(the current index of commandLine) is added
                         statement.setMatchID(index);
                         matchingIDList.add(0,index);
                     }
@@ -182,13 +200,21 @@ public class GOTO_interpreter{
                     {
                         throw new Exception("GOSUB cannot go to itself");
                     }
+                    //Adds a gosub into array so that we can know which current gosub we must return to
                     gosubStackArray.add(0,statement);
                 }
 
                 else if (statement.getStatementID().equals("RETURN"))
                 {
+                    //Checks if the return statement has a matchingID
                     if (statement.getResult() == null)
                     {
+                        //This happends when there is a return before a gosub
+                        if (matchingIDList.size() == 0 || gosubStackArray.size() == 0)
+                        {
+                            throw new Exception("There is no corresponding gosub to return to.");
+                        }
+                        //matchingID is assigned and removed for the list so that we know we have already assigned this returned object an matchingID
                         statement.setMatchID(matchingIDList.get(0));
                         matchingIDList.remove(0);
                         index = searchForLineNumber(gosubStackArray.get(0).getCurrentLine()) + 1;
@@ -196,18 +222,23 @@ public class GOTO_interpreter{
                     }
                     else
                     {
+                        //The index to return to
                         index = statement.getResult();
                         index += 1;
                     }
                 }
+                // IF it is not a IF,GOTO,RETURN or GOSUB statement, we increment the index by 1 to read the next line
                 else
                 {
                     index += 1;
                 }
+
                 if (statement.getStatementID().equals("PRINT")) {
+                    //Writes the results to show to the console
                     writeResults(statement.getResult().toString());
                 }
 
+                //This happens when we have reached and finished running the code
                 if (index.equals(currentCommand.size())) {
                     this.running = false;
                 }
@@ -216,7 +247,7 @@ public class GOTO_interpreter{
         }
         catch (Exception e)
         {
-//            results.clear();
+            results.clear();
             writeResults("Stopped at Line " + (this.currentLineNumber) + " ERROR: " + e.getMessage());
         }
     }

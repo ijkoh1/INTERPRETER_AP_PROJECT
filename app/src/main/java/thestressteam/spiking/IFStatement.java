@@ -19,7 +19,7 @@ public class IFStatement extends Statement{
     //An integer to store the result from the expression
     private Integer result;
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Initialize variables according to the parameters of a IFStatement
     * params: lineNumber = A integer containing the current line number of the command
@@ -28,7 +28,7 @@ public class IFStatement extends Statement{
     * pre_conditions: None
     * post-conditions: Variables are initialized in IFStatement object
     * exception handling: None
-    * */
+    */
     public IFStatement(Integer lineNumber, Expression expression, GOTOStatement gotoStatement)
     {
         this.currentLine = lineNumber;
@@ -38,27 +38,27 @@ public class IFStatement extends Statement{
         this.result = null;
     }
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Retrieves the name of the statement
     * params: None
     * pre_conditions: None
     * post-conditions: Returns a string of the statement name
     * exception handling: None
-    * */
+    */
     @Override
     public String getStatementID() {
         return this.statementID;
     }
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Runs the IFStatement object and returns the current state of declaredVariableList
     * params: dvl = A dictionary containing the current variables and values
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of variables
     * exception handling: None
-    * */
+    */
     @Override
     public DeclaredVariableList executeRun(DeclaredVariableList dvl) {
         String rightSide = dvl.getValue((expression.getRightSide())).toString();
@@ -75,6 +75,14 @@ public class IFStatement extends Statement{
         return dvl;
     }
 
+    /**
+     * Author: Ivan
+     * purpose: Retrieves and returns a string list to save
+     * params: None
+     * pre_conditions: A statement must exists
+     * post-conditions: Returns a string list to save
+     * exception handling: None
+     */
     @Override
     public ArrayList<String> getDetails() {
         ArrayList<String> details = new ArrayList<String>();
@@ -87,55 +95,53 @@ public class IFStatement extends Statement{
         return details;
     }
 
+    /**
+     * Author: Ivan
+     * purpose: None
+     * params: None
+     * pre_conditions: None
+     * post-conditions: None
+     * exception handling: None
+     */
     @Override
     public void setMatchID(Integer matchID) {
         return;
     }
 
-    /*
-    * Author: Ivan
-    * purpose: Increments and returns the currentLine of the statement
-    * params: currentLineNumber = A currentLine number it is pointing at
-    * pre_conditions: A statement must exist
-    * post-conditions: Returns the edited state of currentLine
-    * exception handling: None
-    * */
-//    @Override
-//    public Integer nextLine() {
-//        Integer nextLineNumber = this.currentLine + 1;
-//        if (this.result != 0)
-//        {
-//            nextLineNumber = this.gotoStatement.nextLine();
-//        }
-//        return nextLineNumber;
-//    }
-
-    /*
+    /**
     * Author: Ivan
     * purpose: Retrieves the currentLine
     * params: None
     * pre_conditions: A statement must exist
     * post-conditions: Returns the currentLine
     * exception handling: None
-    * */
+    */
     @Override
     public Integer getCurrentLine() {
         return this.currentLine;
     }
 
+    /**
+     * Author: Ivan
+     * purpose: Returns the lineNumber to jumptTo
+     * params: None
+     * pre_conditions: None
+     * post-conditions: None
+     * exception handling: None
+     */
     @Override
     public Integer getJumpToLine() {
         return this.gotoStatement.getJumpToLine();
     }
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Retrieves the result of the statement
     * params: None
     * pre_conditions: None
     * post-conditions: Returns a integer of the statement result from the statement
     * exception handling: None
-    * */
+    */
     @Override
     public Integer getResult() {
         return this.result;
