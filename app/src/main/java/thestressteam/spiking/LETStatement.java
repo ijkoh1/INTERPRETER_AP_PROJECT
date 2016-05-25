@@ -17,7 +17,7 @@ public class LETStatement extends Statement {
     //A string to store the name of the statement
     private String statementID;
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Initialize variables according to the parameters of a LETStatement
     * params: lineNumber = A integer containing the current line number of the command
@@ -25,7 +25,7 @@ public class LETStatement extends Statement {
     *         expression = A expression object containing 2 variables/integer and 1 operator
     * pre_conditions: None
     * post-conditions: Variables are initialized in LETStatement object
-    * */
+    */
     public LETStatement(Integer lineNumber, Variable variable, Expression expression)
     {
         this.currentLine = lineNumber;
@@ -34,13 +34,13 @@ public class LETStatement extends Statement {
         this.statementID = "LET";
     }
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Runs the LETStatement object and returns the current state of declaredVariableList
     * params: dvl = A dictionary containing the current variables and values
     * pre_conditions: A statement must exist
     * post-conditions: Returns the edited state of variables
-    * */
+    */
     @Override
     public DeclaredVariableList executeRun(DeclaredVariableList dvl)
     {
@@ -48,7 +48,6 @@ public class LETStatement extends Statement {
         dvl.declareVariable(variable.getVariableName());
         Integer rightSide = dvl.getValue((expression.getRightSide()));
         Integer leftSide = dvl.getValue((expression.getLeftSide()));
-//        System.out.println("LEFT: " + leftSide + " EXP: " + expression.getOperator() + " RIGHT: " + rightSide);
         try
         {
             if (rightSide == null || leftSide == null){
@@ -60,8 +59,6 @@ public class LETStatement extends Statement {
                 throw new Exception("Invalid operation given");
             }
             dvl.assgnVariable(variable.getVariableName(),value);
-//            System.out.println(variable.getVariableName() + value);
-//            System.out.println(dvl.getValue("x"));
             return dvl;
         }
         catch (Exception e)
@@ -70,6 +67,14 @@ public class LETStatement extends Statement {
         }
     }
 
+    /**
+     * Author: Ivan
+     * purpose: Retrieves and returns a string list to save
+     * params: None
+     * pre_conditions: A statement must exists
+     * post-conditions: Returns a string list to save
+     * exception handling: None
+     */
     @Override
     public ArrayList<String> getDetails() {
         ArrayList<String> details = new ArrayList<String>();
@@ -82,60 +87,61 @@ public class LETStatement extends Statement {
         return details;
     }
 
+    /**
+     * Author: Ivan
+     * purpose: None
+     * params: None
+     * pre_conditions: None
+     * post-conditions: None
+     */
     @Override
     public void setMatchID(Integer matchID) {
         return;
     }
 
-    /*
+    /**
     * Author: Ivan
     * purpose: Retrieves the name of the statement
     * params: None
     * pre_conditions: None
     * post-conditions: Returns a string of the statement name
-    * */
+    */
     @Override
     public String getStatementID() {
         return this.statementID;
     }
 
-    /*
+    /**
     * Author: Ivan
-    * purpose: Retrieves the result of the statement
+    * purpose: None
     * params: None
     * pre_conditions: None
-    * post-conditions: Returns a integer of the statement result from the statement
-    * */
+    * post-conditions: None
+    */
     @Override
     public Integer getResult() {
         return null;
     }
 
-    /*
-    * Author: Ivan
-    * purpose: Increments and returns the currentLine of the statement
-    * params: currentLineNumber = A currentLine number it is pointing at
-    * pre_conditions: A statement must exist
-    * post-conditions: Returns the edited state of currentLine
-    * */
-//    @Override
-//    public Integer nextLine() {
-//        Integer nextLineNumber = this.currentLine + 1;
-//        return nextLineNumber;
-//    }
-
-    /*
+    /**
     * Author: Ivan
     * purpose: Retrieves the currentLine
     * params: None
     * pre_conditions: A statement must exist
     * post-conditions: Returns the currentLine
-    * */
+    */
     @Override
     public Integer getCurrentLine() {
         return this.currentLine;
     }
 
+    /**
+     * Author: Ivan
+     * purpose: None
+     * params: None
+     * pre_conditions: None
+     * post-conditions: None
+     */
     @Override
     public Integer getJumpToLine() {
         return null;
