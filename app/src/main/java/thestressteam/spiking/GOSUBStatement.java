@@ -9,12 +9,14 @@ public class GOSUBStatement extends Statement{
     private Integer currentLine;
     private String statementID;
     private Integer jumpToLine;
+    private Integer matchID;
 
     public GOSUBStatement(Integer lineNumber, Integer jumpToLine)
     {
         this.currentLine = lineNumber;
         this.statementID = "GOSUB";
         this.jumpToLine = jumpToLine;
+        this.matchID = null;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class GOSUBStatement extends Statement{
 
     @Override
     public Integer getResult() {
-        return null;
+        return matchID;
     }
 
     @Override
@@ -52,7 +54,7 @@ public class GOSUBStatement extends Statement{
     }
 
     @Override
-    public void setLooped(boolean isLooped) {
-        return;
+    public void setMatchID(Integer matchID) {
+        this.matchID = matchID;
     }
 }

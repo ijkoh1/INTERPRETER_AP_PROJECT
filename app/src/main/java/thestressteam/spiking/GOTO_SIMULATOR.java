@@ -352,6 +352,11 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 RETURNStatement returnObj = new RETURNStatement(currentLine);
                 cmdObj = new Command(returnObj);
                 commandLine.addCommand(cmdObj);
+            } else if (currentBlock.getId() == R.id.remBlock) {
+                EditText remInput = (EditText) currentBlock.findViewById(R.id.remEditText);
+                REMStatement remObj = new REMStatement(currentLine,remInput.toString());
+                cmdObj = new Command(remObj);
+                commandLine.addCommand(cmdObj);
             }
         }
         catch (Exception e)
@@ -585,7 +590,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     textbox.setText(Integer.toString(gotoLine));
                 }
             }
-
         }
     }
 

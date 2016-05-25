@@ -61,5 +61,5 @@ public abstract class Statement {
 
     public abstract ArrayList<String> getDetails();
 
-    public abstract void setLooped(boolean isLooped);
+    public abstract void setMatchID(Integer matchID);
 }

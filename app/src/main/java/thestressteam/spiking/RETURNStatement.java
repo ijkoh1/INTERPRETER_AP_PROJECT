@@ -8,15 +8,13 @@ import java.util.ArrayList;
 public class RETURNStatement extends Statement {
     private Integer currentLine;
     private String statementID;
-    private boolean isLooped;
-    private Integer runOnce;
+    private Integer matchID;
 
     public RETURNStatement(Integer lineNumber)
     {
         this.currentLine = lineNumber;
         this.statementID = "RETURN";
-        this.isLooped = false;
-        this.runOnce = 1;
+        this.matchID = null;
     }
 
     @Override
@@ -26,11 +24,7 @@ public class RETURNStatement extends Statement {
 
     @Override
     public Integer getResult() {
-        if (this.isLooped)
-        {
-            return this.runOnce - 1;
-        }
-        return this.runOnce;
+        return this.matchID;
     }
 
     @Override
@@ -57,7 +51,7 @@ public class RETURNStatement extends Statement {
     }
 
     @Override
-    public void setLooped(boolean isLooped) {
-        this.isLooped = isLooped;
+    public void setMatchID(Integer matchID) {
+        this.matchID = matchID;
     }
 }

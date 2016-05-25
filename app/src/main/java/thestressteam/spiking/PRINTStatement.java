@@ -55,7 +55,7 @@ public class PRINTStatement extends Statement {
     }
 
     @Override
-    public void setLooped(boolean isLooped) {
+    public void setMatchID(Integer matchID) {
         return;
     }
 

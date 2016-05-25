@@ -108,6 +108,8 @@ public class GOTO_interpreter{
         Integer index = 0;
         Integer prev_index;
         ArrayList<Statement> gosubStackArray = new ArrayList<>();
+        ArrayList<Integer> matchingIDList = new ArrayList<>();
+        Integer matchID = 0;
         try {
             while (this.running) {
                 if (count > 100)
@@ -130,7 +132,6 @@ public class GOTO_interpreter{
                     throw new Exception("Invalid Input.");
                 }
                 prev_index = index;
-                index += 1;
 //                writeResults("After execution " + this.currentLineNumber);
                 if (statement.getStatementID().equals("GOTO"))
                 {
@@ -145,24 +146,33 @@ public class GOTO_interpreter{
                     }
                 }
 
-                if (statement.getStatementID().equals("IF"))
+                else if (statement.getStatementID().equals("IF"))
                 {
                     if (statement.getResult() != 0)
                     {
                         index = searchForLineNumber(statement.getJumpToLine());
+                        if (index.equals(prev_index))
+                        {
+                            throw new Exception("GOTO cannot go to itself");
+                        }
+                    }
+                    else
+                    {
+                        index += 1;
                     }
                     if (index == null)
                     {
                         throw new Exception("GOTO jumped to an non_existent lineNumber");
                     }
-                    if (index.equals(prev_index))
-                    {
-                        throw new Exception("GOTO cannot go to itself");
-                    }
                 }
 
-                if (statement.getStatementID().equals("GOSUB"))
+                else if (statement.getStatementID().equals("GOSUB"))
                 {
+                    if (statement.getResult() == null)
+                    {
+                        statement.setMatchID(index);
+                        matchingIDList.add(0,index);
+                    }
                     index = searchForLineNumber(statement.getJumpToLine());
                     if (index == null)
                     {
@@ -175,20 +185,25 @@ public class GOTO_interpreter{
                     gosubStackArray.add(0,statement);
                 }
 
-                if (statement.getStatementID().equals("RETURN"))
+                else if (statement.getStatementID().equals("RETURN"))
                 {
-                    if (gosubStackArray.size() == 0 || statement.getResult() == 0)
+                    if (statement.getResult() == null)
                     {
-                        throw new Exception("Runtime ERROR");
+                        statement.setMatchID(matchingIDList.get(0));
+                        matchingIDList.remove(0);
+                        index = searchForLineNumber(gosubStackArray.get(0).getCurrentLine()) + 1;
+                        gosubStackArray.remove(0);
                     }
                     else
                     {
-                        index = searchForLineNumber(gosubStackArray.get(0).getCurrentLine()) + 1;
-                        gosubStackArray.remove(0);
-                        statement.setLooped(true);
+                        index = statement.getResult();
+                        index += 1;
                     }
                 }
-
+                else
+                {
+                    index += 1;
+                }
                 if (statement.getStatementID().equals("PRINT")) {
                     writeResults(statement.getResult().toString());
                 }
@@ -201,7 +216,7 @@ public class GOTO_interpreter{
         }
         catch (Exception e)
         {
-            results.clear();
+//            results.clear();
             writeResults("Stopped at Line " + (this.currentLineNumber) + " ERROR: " + e.getMessage());
         }
     }
