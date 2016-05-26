@@ -2,20 +2,14 @@ package thestressteam.spiking;
 
 import android.content.ClipData;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,20 +17,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.io.Console;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /*
 * Author: Hanna & Ivan
 * Purpose: GOTO_SIMULATOR is in charge of handling the user inputs such as button clicks.*/
 public class GOTO_SIMULATOR extends AppCompatActivity{
     //LinearLayout so that we can add command gui
-    LinearLayout from, to, currentBlock;
+    LinearLayout to, currentBlock;
     //TextView so that we can get the text of the block
     TextView  console;
-    int transitionCount = 0, lineNum;
+    int transitionCount = 0;
     //A viewgroup to add command blocks
     ViewGroup instruction;
     //A view for all the commands available
@@ -55,13 +46,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     int widthDP;
     ArrayList<Spinner> existingSpinners;
 
-    /*
-    * Author: Hanna
-    * purpose: Recreates the gui if the app reopens again and initialize the view of instructions
-    * params: savedInstanceState = Retrieves the previous state if the app reopens again
-    * pre_conditions: None
-    * post-conditions: None
-    * exception handling: None
+    /**
+    * @author: Hanna
+    * @purpose: Recreates the gui if the app reopens again and initialize the view of instructions
+    * @params: savedInstanceState = Retrieves the previous state if the app reopens again
+    * @pre_conditions: None
+    * @post-conditions: None
+    * @exception-handling: None
     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +72,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         varList = new ArrayList<String>();
         varList.add("");
         varList.add("Add New");
-        
         existingSpinners = new ArrayList<Spinner>();
 
         //initialise drag and drop on variable View
@@ -94,18 +84,15 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
         //width of every textbox
         widthDP = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics());
-
-
-
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Creates a block of PRINT statement with TextBox shown as user inputs
-    * params: v = view of the PRINT to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist and when the PRINT button is clicked
-    * post-conditions: PRINT block statement is created
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Creates a block of PRINT statement with TextBox shown as user inputs
+    * @params: v = view of the PRINT to detect when it is clicked
+    * @pre_conditions: Instruction and console view must exist and when the PRINT button is clicked
+    * @post-conditions: PRINT block statement is created
+    * @exception-handling: None
     */
     public void onClickPrint(View v) {
         //add PRINT block to display screen
@@ -118,20 +105,19 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-//        console.append("PRINT block added.\n");
 
-        //initialise dragand drop spinner
+        //initialise drag and drop spinner
         View printValue = printBlock.findViewById(R.id.printEditText);
         printValue.setOnDragListener(new MyDragListener());
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Creates a block of REM statement with TextBox shown as user inputs
-    * params: v = view of the REM to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist and when the REM button is clicked
-    * post-conditions: REM block statement is created
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Creates a block of REM statement with TextBox shown as user inputs
+    * @params: v = view of the REM to detect when it is clicked
+    * @pre_conditions: Instruction and console view must exist and when the REM button is clicked
+    * @post-conditions: REM block statement is created
+    * @exception-handling: None
     * */
     public void onClickRem(View v) {
         //add REM block to display screen
@@ -144,16 +130,15 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         transitionCount++;
         //add text to console indicating user action
         console = (TextView) findViewById(R.id.console);
-//        console.append("REM block added.\n");
     }
 
     /**
     * @author: Hanna & Ivan
-    * purpose: Creates a block of GOTO statement with TextBox shown as user inputs
-    * params: v = view of the GOTO to detect when it is clicked and when the GOTO button is clicked
-    * pre_conditions: Instruction and console view must exist
-    * post-conditions: GOTO block statement is created
-    * exception handling: None
+    * @purpose: Creates a block of GOTO statement with TextBox shown as user inputs
+    * @params: v = view of the GOTO to detect when it is clicked and when the GOTO button is clicked
+    * @pre_conditions: Instruction and console view must exist
+    * @post-conditions: GOTO block statement is created
+    * @exception-handling: None
     */
     public void onClickGoto(View v) {
         //add GOTO block to display screen
@@ -172,13 +157,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         gotoEditText.setOnFocusChangeListener(new onFocusGOTO());
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Creates a block of IF statement with TextBox shown as user inputs
-    * params: v = view of the IF to detect when it is clicked and when the IF button is clicked
-    * pre_conditions: Instruction and console view must exist
-    * post-conditions: IF block statement is created
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Creates a block of IF statement with TextBox shown as user inputs
+    * @params: v = view of the IF to detect when it is clicked and when the IF button is clicked
+    * @pre_conditions: Instruction and console view must exist
+    * @post-conditions: IF block statement is created
+    * @exception-handling: None
     * */
     public void onClickIf(View v) {
         //add IF block to display screen
@@ -209,13 +194,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Creates a block of LET statement with TextBox shown as user inputs
-    * params: v = view of the LET to detect when it is clicked and when the LET button is clicked
-    * pre_conditions: Instruction and console view must exist
-    * post-conditions: LET block statement is created
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Creates a block of LET statement with TextBox shown as user inputs
+    * @params: v = view of the LET to detect when it is clicked and when the LET button is clicked
+    * @pre_conditions: Instruction and console view must exist
+    * @post-conditions: LET block statement is created
+    * @exception-handling: None
     * */
     public void onClickLet(View v) {
         //add LET block to display screen
@@ -247,6 +232,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
 
     }
 
+    /**
+     * @author: Ivan
+     * @purpose:
+     * @params: v = view of the GOSUB to detect when it is clicked and when the GOSUB button is clicked
+     * @pre_conditions:
+     * @post-conditions:
+     * @exception-handling:
+     * */
     public void onClickGosub(View v) {
         //add GOTO block to display screen
         ++lineCount;
@@ -264,6 +257,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         gosubEditText.setOnFocusChangeListener(new onFocusGOTO());
     }
 
+    /**
+     * @author: Ivan
+     * @purpose:
+     * @params: v = view of the RETURN to detect when it is clicked and when the RETURN button is clicked
+     * @pre_conditions:
+     * @post-conditions:
+     * @exception-handling:
+     * */
     public void onClickReturn(View v) {
         //add REM block to display screen
         ++lineCount;
@@ -275,13 +276,13 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         transitionCount++;
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Reads in the user inputs and creates and adds command into the commandLine variable
-    * params: None
-    * pre_conditions: Command statements must be added
-    * post-conditions: Commands are added into commandLine
-    * exception handling: case 1: if user inputs are null
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Reads in the user inputs and creates and adds command into the commandLine variable
+    * @params: None
+    * @pre_conditions: Command statements must be added
+    * @post-conditions: Commands are added into commandLine
+    * @exception-handling: case 1: if user inputs are null
     *                     case 2: if name of variable starts an integer
     * */
     public void checkCodeLine()
@@ -310,22 +311,12 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                         ViewGroup block = (ViewGroup) textBox.getParent();
                         int index = block.indexOfChild(textBox);
                         Spinner spinner = (Spinner)block.getChildAt(index-1);
-                        //textBoxInput[i] = spinner.getSelectedItem().toString();
                         textBoxInput.add(spinner.getSelectedItem().toString());
                     }else{ //just read from textbox
-                        //textBoxInput[i] = textBox.getText().toString();
                         textBoxInput.add(textBox.getText().toString());
                     }
                 }
-
                 Spinner opSpinner = (Spinner) currentBlock.findViewById(R.id.letOperator);
-                //EditText variableNameInput = (EditText) currentBlock.findViewById(R.id.letVariable);
-                //EditText expressionValue1Input = (EditText) currentBlock.findViewById(R.id.letValue);
-                //EditText operatorInput = (EditText) currentBlock.findViewById(R.id.letOperator);
-                //EditText expressionValue2Input = (EditText) currentBlock.findViewById(R.id.letValue2);
-
-                //Spinner operator = (Spinner) currentBlock.findViewById(R.id.letOperator);
-                //&& !operatorInput.getText().toString().equals("")
 
                 //make sure all textboxes contain values
                 System.out.println(textBoxInput.toString());
@@ -345,21 +336,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     console.append(String.format("Line %d Please fill up the input.\n", currentLine));
                 }
 
-                /*
-                if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("")  && !expressionValue2Input.getText().toString().equals("")) {
-                    if (Character.isDigit(variableNameInput.getText().toString().charAt(0))) {
-                        throw new Exception("Variable must not start with an integer");
-                    }
-                    Variable variableObj = new Variable(variableNameInput.getText().toString());
-//                    System.out.println("RIGHT: " + expressionValue1Input.getText().toString() + " EXP: " + operator.getSelectedItem().toString() + " LEFT: " + expressionValue2Input.getText().toString());
-                    Expression expressionObj = new Expression(expressionValue1Input.getText().toString(), operator.getSelectedItem().toString(), expressionValue2Input.getText().toString());
-                    LETStatement letObj = new LETStatement(currentLine, variableObj, expressionObj);
-                    cmdObj = new Command(letObj);
-                    commandLine.addCommand(cmdObj);
-                } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
-                }
-                */
             } else if (currentBlock.getId() == R.id.gotoBlock) {
                 EditText gotoLineInput = (EditText) currentBlock.findViewById(R.id.gotoEditText);
                 if (!gotoLineInput.getText().toString().equals("")) {
@@ -393,14 +369,9 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                         iftextBoxInput.add(textBox.getText().toString());
                     }
                 }
-
-                //EditText expressionLeftSideInput = (EditText) currentBlock.findViewById(R.id.ifVariable);
-                //EditText operator = (EditText) currentBlock.findViewById(R.id.ifOperator);
-                //EditText expressionRightSideInput = (EditText) currentBlock.findViewById(R.id.ifValue);
                 EditText jumpToLine = (EditText) currentBlock.findViewById(R.id.ifGotoEditText);
                 Spinner opSpinner = (Spinner) currentBlock.findViewById(R.id.ifOperator);
 
-                //Spinner operator = (Spinner)currentBlock.findViewById(R.id.ifOperator);
                 boolean empty = iftextBoxInput.contains("")|| iftextBoxInput.contains(null);
                 if (!empty){
                     //allocate values to respective object parameters
@@ -413,19 +384,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     console.append(String.format("Line %d Please fill up the input.\n", currentLine));
                 }
 
-                /*
-                if (!expressionLeftSideInput.getText().toString().equals("") && !operator.getSelectedItem().toString().equals(null) && !expressionRightSideInput.getText().toString().equals("") && !jumpToLine.getText().toString().equals("")) {
-                    Expression expObj = new Expression(expressionLeftSideInput.getText().toString(), operator.getSelectedItem().toString(), expressionRightSideInput.getText().toString());
-                    GOTOStatement go2Obj = new GOTOStatement(currentLine, Integer.parseInt(jumpToLine.getText().toString()));
-                    IFStatement ifObj = new IFStatement(currentLine, expObj, go2Obj);
-                    cmdObj = new Command(ifObj);
-                    commandLine.addCommand(cmdObj);
-                } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
-                }
-                */
             } else if (currentBlock.getId() == R.id.printBlock) {
-
                 String printValue;
                 EditText textBox = (EditText) currentBlock.findViewById(R.id.printEditText);
                 //if the textbox width is 0, means a Spinner exists, hence read value from spinner instead
@@ -446,15 +405,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 }else {
                     console.append(String.format("Line %d Please fill up the textBox input.\n", currentLine));
                 }
-                /*
-                EditText printInput = (EditText) currentBlock.findViewById(R.id.printEditText);
-                if (!printInput.getText().toString().equals("")) {
-                    PRINTStatement printObj = new PRINTStatement(currentLine, printInput.getText().toString());
-                    cmdObj = new Command(printObj);
-                    commandLine.addCommand(cmdObj);
-                } else {
-                    console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
-                }*/
+
             } else if (currentBlock.getId() == R.id.gosubBlock) {
                 EditText gosubInput = (EditText) currentBlock.findViewById(R.id.gosubEditText);
                 if (!gosubInput.getText().toString().equals("")) {
@@ -464,7 +415,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
-
 
             } else if (currentBlock.getId() == R.id.returnBlock) {
                 RETURNStatement returnObj = new RETURNStatement(currentLine);
@@ -483,9 +433,17 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
+    /**
+     * @author: Ivan
+     * @purpose:
+     * @params:
+     * @pre_conditions:
+     * @post-conditions:
+     * @exception-handling:
+     * */
     public void onClickSave(View v)
     {
-        String fileName = "bitchPls.txt";
+        String fileName = "test.txt";
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);
         currentLine = 0;
         commandLine.removeALLExpressions();
@@ -499,16 +457,15 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         ls.loadCode(fileName,this);
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Uses GOTO_interpretr methods to run the commandLine statements and display the output
-    * params: v = view of the Transition button to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist
-    * post-conditions: CommandLine is executed and output is displayed in the console
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Uses GOTO_interpretr methods to run the commandLine statements and display the output
+    * @params: v = view of the Transition button to detect when it is clicked
+    * @pre_conditions: Instruction and console view must exist
+    * @post-conditions: CommandLine is executed and output is displayed in the console
+    * @exception handling: None
     * */
     public void onClickStart(View v){
-
         //get display-screen object
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);
         currentLine = 0;
@@ -516,10 +473,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         //reset all transition lines to default
         for (int x = 0; x<instruction.getChildCount();x++){
             currentBlock = (LinearLayout) instruction.getChildAt(x);
-
             checkCodeLine();
         }
-
         if (commandLine.getCommandLines().size() != 0)
         {
                 GOTO_interpreter gotoInterpreter = new GOTO_interpreter(commandLine);
@@ -532,16 +487,15 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     console.append(String.format("%s\n",results.get(i)));
                 }
         }
-
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Clears all commandLine
-    * params: v = view of the ClearDisplay to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist
-    * post-conditions: All command blocks are deleted
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Clears all commandLine
+    * @params: v = view of the ClearDisplay to detect when it is clicked
+    * @pre_conditions: Instruction and console view must exist
+    * @post-conditions: All command blocks are deleted
+    * @exception-handling: None
     * */
     public void onClickNewProgram(View v){
         lineCount = 0;
@@ -557,33 +511,30 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         varList.clear();
         varList.add("");
         varList.add("Add New");
-
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Clears the console
-    * params: v = view of the ClearConsole to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist
-    * post-conditions: All text in the console is cleared
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Clears the console
+    * @params: v = view of the ClearConsole to detect when it is clicked
+    * @pre_conditions: Instruction and console view must exist
+    * @post-conditions: All text in the console is cleared
+    * @exception-handling: None
     * */
     public void onClickClearConsole(View v){
         console = (TextView) findViewById(R.id.console);
         if (!console.getText().equals("")){
             console.setText("");
         }
-//        String txt = lineCount + " lines were created";
-//        console.setText(txt);
     }
 
-    /*
-    * Author: Hanna & Ivan
-    * purpose: Deletes a specified command line
-    * params: v = view of the DeleteStatement to detect when it is clicked
-    * pre_conditions: Instruction and console view must exist
-    * post-conditions: A command block statement is deleted
-    * exception handling: None
+    /**
+    * @author: Hanna & Ivan
+    * @purpose: Deletes a specified command line
+    * @params: v = view of the DeleteStatement to detect when it is clicked
+    * @pre_conditions: Instruction and console view must exist
+    * @post-conditions: A command block statement is deleted
+    * @exception-handling: None
     * */
     public void onClickDeleteStatement(View v){
         instruction = (LinearLayout) findViewById(R.id.displayInstructions);
@@ -606,6 +557,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
+    /**
+     * @author: Hanna
+     * @purpose: To allow variable block to be dragged.
+     * @params: v = the <VARIABLE> block
+     * @pre_conditions: The <VARIABLE> block must exist.
+     * @post-conditions: <VARIABLE> block is draggable
+     * @exception-handling: none
+     * */
     //When adding variable dropdown to statement
     public void onTouchVariable(View v) {
         v.setOnTouchListener(new View.OnTouchListener() {
@@ -619,6 +578,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         });
     }
 
+    /**
+     * @author: Hanna
+     * @purpose: To activate the removal of variable block from statements.
+     * @params: v = Variable selection drop-down
+     * @pre_conditions: Variable selection drop-down must exist in statement blocks
+     * @post-conditions: Variable selection drop-down is draggable
+     * @exception-handling: none
+     * */
     //When removing variable dropdown from statement
     public void onLongTouchVariable(View v){
         v.setOnLongClickListener(new View.OnLongClickListener() {
@@ -634,6 +601,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         });
     }
 
+    /**
+     * @author: Hanna
+     * @purpose: To allow the addition of <VARIABLE> block to statements.
+     * @params: none
+     * @pre_conditions: A View object to implement the listener.
+     * @post-conditions: A Variable selection drop-down can be added to the View object.
+     * @exception-handling: none
+     * */
     //When adding variable dropdown to statement
     public class MyDragListener implements View.OnDragListener {
         @Override
@@ -657,12 +632,19 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 v.setLayoutParams(new LinearLayout.LayoutParams(0,0));
                 parent.addView(varSelection,index);
                 onLongTouchVariable(varSelection);
-
             }
             return true;
         }
     }
 
+    /**
+     * @author: Hanna
+     * @purpose: To remove variable selection dropdown from statements.
+     * @params: none
+     * @pre_conditions: A View object(Variable selection dropdown)to implement the listener.
+     * @post-conditions: An existing Variable selection drop-down can be removed from the app
+     * @exception-handling: none
+     * */
     //When removing variable dropdown from statement
     public class removeVarListener implements View.OnDragListener{
         @Override
@@ -685,7 +667,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
-
+    /**
+     * @author: Hanna
+     * @purpose: To detect and act upon when user selects a GOTO target via touch.
+     * @params: none
+     * @pre_conditions: Statement blocks must exist.
+     * @post-conditions: Line number will be retrieved when a user touches a statement block.
+     * @exception-handling: none
+     * */
     public class touchGOTO implements View.OnClickListener{
         @Override
         public void onClick(View v){
@@ -704,6 +693,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
+    /**
+     * @author: Hanna
+     * @purpose: To initialise line touch listeners whenever a textbox is focused
+     * @params: none
+     * @pre_conditions: Textboxes must exist.
+     * @post-conditions: touchGOTO listener will be initialised to all existing Statement blocks
+     * @exception-handling: none
+     * */
     //Initialises line touch listener whenever a textbox is focused
     public class onFocusGOTO implements EditText.OnFocusChangeListener{
         @Override
@@ -718,6 +715,14 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         }
     }
 
+    /**
+     * @author: Hanna
+     * @purpose: To detect and act upon when user selects "Add New" to create a new variable
+     * @params: none
+     * @pre_conditions: "Add New" selection must exist in the Variable selection dropdown
+     * @post-conditions: A message box will pop up to request a new variable name from user.
+     * @exception-handling: none
+     * */
     //When user selects variable
     public class onSelectNewVar implements AdapterView.OnItemSelectedListener{
         @Override
@@ -760,10 +765,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                                     x.setAdapter(newadapter);
                                     x.setSelection(currentSelected);
                                 }
-
                             }
-                            //varSelection.setAdapter(newadapter);
-                            //adapter.getAdapter();
                             adapter.setSelection(newVarPos);
                         }
                     }
@@ -781,10 +783,6 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
             }
         }
         @Override
-        public void onNothingSelected(AdapterView parent){
-
-        }
+        public void onNothingSelected(AdapterView parent){}
     }
-
-
 }

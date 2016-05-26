@@ -40,7 +40,7 @@
         android:layout_width="70dp"
         android:layout_height="fill_parent"
         android:id="@+id/letVariable"
-        android:background="#ffffff"
+        android:background="#cdd5fd"
         android:layout_gravity="center"
         android:singleLine="true" />
 
@@ -62,7 +62,7 @@
             android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:id="@+id/letValue"
-            android:background="#ffffff"
+            android:background="#cdd5fd"
             android:singleLine="true" />
 
         <RelativeLayout
@@ -83,7 +83,7 @@
             android:layout_width="70dp"
             android:layout_height="fill_parent"
             android:id="@+id/letValue2"
-            android:background="#ffffff"
+            android:background="#cdd5fd"
             android:singleLine="true" />
     </LinearLayout>
 

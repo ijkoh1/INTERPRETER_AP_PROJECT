@@ -40,7 +40,7 @@
         android:layout_width="70dp"
         android:layout_height="fill_parent"
         android:id="@+id/printEditText"
-        android:background="#ffffff"
+        android:background="#cdd5fd"
         android:paddingRight="30dp"
         android:layout_gravity="center"
         android:autoText="false"

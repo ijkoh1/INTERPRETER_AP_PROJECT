@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Spiking</string>
+    <string name="app_name">GOTO_SIMULATOR</string>
     <string name="print">PRINT</string>
     <string name="lineNumber">lineNumber</string>
 </resources>

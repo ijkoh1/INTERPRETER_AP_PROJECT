@@ -24,7 +24,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="START"
+                android:text="[START]"
                 android:id="@+id/start"
                 android:onClick="onClickStart"
                 android:layout_alignParentTop="true"
@@ -38,7 +38,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="NEW"
+                android:text="[NEW]"
                 android:id="@+id/newProgram"
                 android:onClick="onClickNewProgram"
                 android:background="@android:color/transparent"
@@ -47,7 +47,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="SAVE"
+                android:text="[SAVE]"
                 android:id="@+id/saveButton"
                 android:onClick="onClickSave"
                 android:background="@android:color/transparent"
@@ -85,7 +85,7 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/sidebar"
             android:orientation="horizontal"
-            android:layout_weight="0.07"
+            android:layout_weight="0.05"
             android:background="#9b3a3a">
 
             <TextView
@@ -180,23 +180,53 @@
                 android:layout_height="match_parent"
                 android:background="#a9b2de"
                 android:id="@+id/variable"
-                android:layout_weight="0.2"
+                android:layout_weight="0.3"
                 android:layout_gravity="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="VARIABLE"
+                    android:text="&lt;variable>"
                     android:id="@+id/variableText"
                     android:layout_centerInParent="true" />
             </RelativeLayout>
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.03"
+            android:background="#281010"
+            android:id="@+id/consoleTopBar"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CONSOLE"
+                android:id="@+id/consoleTitle"
+                android:textColor="#c69b9b"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[CLEAR]"
+                android:id="@+id/clearConsole"
+                android:textColor="#ebc8c8"
+                android:layout_alignTop="@+id/consoleTitle"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:onClick="onClickClearConsole" />
+        </RelativeLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:id="@+id/consoleScroll"
-            android:layout_weight="0.18"
+            android:layout_weight="0.2"
             android:paddingLeft="20dp"
             android:paddingTop="10dp"
             android:paddingRight="20dp"
