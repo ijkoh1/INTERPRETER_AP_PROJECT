@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import java.io.Console;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /*
 * Author: Hanna & Ivan
@@ -52,6 +53,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     Spinner varSelection;
     private String newVarName;
     int widthDP;
+    ArrayList<Spinner> existingSpinners;
 
     /*
     * Author: Hanna
@@ -79,6 +81,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         varList = new ArrayList<String>();
         varList.add("");
         varList.add("Add New");
+        
+        existingSpinners = new ArrayList<Spinner>();
 
         //initialise drag and drop on variable View
         View var = findViewById(R.id.variable);
@@ -287,13 +291,61 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
         {
             currentLine++;
             if (currentBlock.getId() == R.id.letBlock) {
-                EditText variableNameInput = (EditText) currentBlock.findViewById(R.id.letVariable);
-                EditText expressionValue1Input = (EditText) currentBlock.findViewById(R.id.letValue);
-                //EditText operatorInput = (EditText) currentBlock.findViewById(R.id.letOperator);
-                EditText expressionValue2Input = (EditText) currentBlock.findViewById(R.id.letValue2);
+                //create a list with all the textboxes
+                EditText letVar = (EditText) currentBlock.findViewById(R.id.letVariable);
+                EditText letVal1 = (EditText)currentBlock.findViewById(R.id.letValue);
+                EditText letVal2 = (EditText)currentBlock.findViewById(R.id.letValue2);
+                ArrayList<EditText> textBoxes = new ArrayList<EditText>();
+                textBoxes.add(letVar);
+                textBoxes.add(letVal1);
+                textBoxes.add(letVal2);
 
-                Spinner operator = (Spinner) currentBlock.findViewById(R.id.letOperator);
+                //an array to hold all the textboxes values
+                ArrayList<String> textBoxInput = new ArrayList<String>();
+                for (int i=0; i<textBoxes.size();i++){
+                    EditText textBox = textBoxes.get(i);
+                    //if the textbox width is 0, means a Spinner exists, hence read value from spinner instead
+                    //all the values from input will be added to a String array
+                    if (textBox.getMeasuredWidth() == 0){
+                        ViewGroup block = (ViewGroup) textBox.getParent();
+                        int index = block.indexOfChild(textBox);
+                        Spinner spinner = (Spinner)block.getChildAt(index-1);
+                        //textBoxInput[i] = spinner.getSelectedItem().toString();
+                        textBoxInput.add(spinner.getSelectedItem().toString());
+                    }else{ //just read from textbox
+                        //textBoxInput[i] = textBox.getText().toString();
+                        textBoxInput.add(textBox.getText().toString());
+                    }
+                }
+
+                Spinner opSpinner = (Spinner) currentBlock.findViewById(R.id.letOperator);
+                //EditText variableNameInput = (EditText) currentBlock.findViewById(R.id.letVariable);
+                //EditText expressionValue1Input = (EditText) currentBlock.findViewById(R.id.letValue);
+                //EditText operatorInput = (EditText) currentBlock.findViewById(R.id.letOperator);
+                //EditText expressionValue2Input = (EditText) currentBlock.findViewById(R.id.letValue2);
+
+                //Spinner operator = (Spinner) currentBlock.findViewById(R.id.letOperator);
                 //&& !operatorInput.getText().toString().equals("")
+
+                //make sure all textboxes contain values
+                System.out.println(textBoxInput.toString());
+                boolean empty = textBoxInput.contains("") || textBoxInput.contains(null);
+                if (!empty){
+                    //check for variable names starting with integer
+                    if (Character.isDigit(textBoxInput.get(0).charAt(0))) {
+                        throw new Exception("Variable must not start with an integer");
+                    }
+                    //allocate values to respective object parameters
+                    Variable variableObj = new Variable(textBoxInput.get(0));
+                    Expression expressionObj = new Expression(textBoxInput.get(1),opSpinner.getSelectedItem().toString(),textBoxInput.get(2));
+                    LETStatement letObj = new LETStatement(currentLine, variableObj, expressionObj);
+                    cmdObj = new Command(letObj);
+                    commandLine.addCommand(cmdObj);
+                }else {
+                    console.append(String.format("Line %d Please fill up the input.\n", currentLine));
+                }
+
+                /*
                 if (!variableNameInput.getText().toString().equals("") && !expressionValue1Input.getText().toString().equals("")  && !expressionValue2Input.getText().toString().equals("")) {
                     if (Character.isDigit(variableNameInput.getText().toString().charAt(0))) {
                         throw new Exception("Variable must not start with an integer");
@@ -307,6 +359,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
+                */
             } else if (currentBlock.getId() == R.id.gotoBlock) {
                 EditText gotoLineInput = (EditText) currentBlock.findViewById(R.id.gotoEditText);
                 if (!gotoLineInput.getText().toString().equals("")) {
@@ -317,12 +370,50 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
             } else if (currentBlock.getId() == R.id.ifBlock) {
-                EditText expressionLeftSideInput = (EditText) currentBlock.findViewById(R.id.ifVariable);
-                //EditText operator = (EditText) currentBlock.findViewById(R.id.ifOperator);
-                EditText expressionRightSideInput = (EditText) currentBlock.findViewById(R.id.ifValue);
-                EditText jumpToLine = (EditText) currentBlock.findViewById(R.id.ifGotoEditText);
+                //create a list with all the textboxes
+                EditText ifVar = (EditText) currentBlock.findViewById(R.id.ifVariable);
+                EditText ifVal = (EditText)currentBlock.findViewById(R.id.ifValue);
 
-                Spinner operator = (Spinner)currentBlock.findViewById(R.id.ifOperator);
+                ArrayList<EditText> textBoxes = new ArrayList<EditText>();
+                textBoxes.add(ifVar);
+                textBoxes.add(ifVal);
+
+                //an array to hold all the textboxes values
+                ArrayList<String> iftextBoxInput = new ArrayList<String>();
+                for (int i=0; i<textBoxes.size();i++){
+                    EditText textBox = textBoxes.get(i);
+                    //if the textbox width is 0, means a Spinner exists, hence read value from spinner instead
+                    //all the values from input will be added to a String array
+                    if (textBox.getMeasuredWidth() == 0){
+                        ViewGroup block = (ViewGroup)textBox.getParent();
+                        int index = block.indexOfChild(textBox);
+                        Spinner spinner = (Spinner)block.getChildAt(index-1);
+                        iftextBoxInput.add(spinner.getSelectedItem().toString());
+                    }else{ //just read from textbox
+                        iftextBoxInput.add(textBox.getText().toString());
+                    }
+                }
+
+                //EditText expressionLeftSideInput = (EditText) currentBlock.findViewById(R.id.ifVariable);
+                //EditText operator = (EditText) currentBlock.findViewById(R.id.ifOperator);
+                //EditText expressionRightSideInput = (EditText) currentBlock.findViewById(R.id.ifValue);
+                EditText jumpToLine = (EditText) currentBlock.findViewById(R.id.ifGotoEditText);
+                Spinner opSpinner = (Spinner) currentBlock.findViewById(R.id.ifOperator);
+
+                //Spinner operator = (Spinner)currentBlock.findViewById(R.id.ifOperator);
+                boolean empty = iftextBoxInput.contains("")|| iftextBoxInput.contains(null);
+                if (!empty){
+                    //allocate values to respective object parameters
+                    Expression expObj = new Expression(iftextBoxInput.get(0),opSpinner.getSelectedItem().toString(),iftextBoxInput.get(1));
+                    GOTOStatement go2Obj = new GOTOStatement(currentLine, Integer.parseInt(jumpToLine.getText().toString()));
+                    IFStatement ifObj = new IFStatement(currentLine, expObj, go2Obj);
+                    cmdObj = new Command(ifObj);
+                    commandLine.addCommand(cmdObj);
+                }else {
+                    console.append(String.format("Line %d Please fill up the input.\n", currentLine));
+                }
+
+                /*
                 if (!expressionLeftSideInput.getText().toString().equals("") && !operator.getSelectedItem().toString().equals(null) && !expressionRightSideInput.getText().toString().equals("") && !jumpToLine.getText().toString().equals("")) {
                     Expression expObj = new Expression(expressionLeftSideInput.getText().toString(), operator.getSelectedItem().toString(), expressionRightSideInput.getText().toString());
                     GOTOStatement go2Obj = new GOTOStatement(currentLine, Integer.parseInt(jumpToLine.getText().toString()));
@@ -332,7 +423,30 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
+                */
             } else if (currentBlock.getId() == R.id.printBlock) {
+
+                String printValue;
+                EditText textBox = (EditText) currentBlock.findViewById(R.id.printEditText);
+                //if the textbox width is 0, means a Spinner exists, hence read value from spinner instead
+                //all the values from input will be added to a String array
+                if (textBox.getMeasuredWidth() == 0){
+                    ViewGroup block = (ViewGroup) textBox.getParent();
+                    int index = block.indexOfChild(textBox);
+                    Spinner spinner = (Spinner)currentBlock.getChildAt(index-1);
+                    printValue = spinner.getSelectedItem().toString();
+                }else{ //just read from textbox
+                    printValue = textBox.getText().toString();
+                }
+                System.out.println(printValue);
+                if (!printValue.equals("")){
+                    PRINTStatement printObj = new PRINTStatement(currentLine, printValue);
+                    cmdObj = new Command(printObj);
+                    commandLine.addCommand(cmdObj);
+                }else {
+                    console.append(String.format("Line %d Please fill up the textBox input.\n", currentLine));
+                }
+                /*
                 EditText printInput = (EditText) currentBlock.findViewById(R.id.printEditText);
                 if (!printInput.getText().toString().equals("")) {
                     PRINTStatement printObj = new PRINTStatement(currentLine, printInput.getText().toString());
@@ -340,7 +454,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     commandLine.addCommand(cmdObj);
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
-                }
+                }*/
             } else if (currentBlock.getId() == R.id.gosubBlock) {
                 EditText gosubInput = (EditText) currentBlock.findViewById(R.id.gosubEditText);
                 if (!gosubInput.getText().toString().equals("")) {
@@ -350,6 +464,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 } else {
                     console.append(String.format("Line %d Please fill up the textBox input\n", currentLine));
                 }
+
+
             } else if (currentBlock.getId() == R.id.returnBlock) {
                 RETURNStatement returnObj = new RETURNStatement(currentLine);
                 cmdObj = new Command(returnObj);
@@ -438,6 +554,10 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
             instruction.removeAllViews();
             commandLine.removeALLExpressions();
         }
+        varList.clear();
+        varList.add("");
+        varList.add("Add New");
+
     }
 
     /*
@@ -523,6 +643,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 varSelection = new Spinner(GOTO_SIMULATOR.this);
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
                 varSelection.setAdapter(adapter);
+                existingSpinners.add(varSelection);
+                
                 ViewGroup.LayoutParams param = new ViewGroup.LayoutParams(70,ViewGroup.LayoutParams.MATCH_PARENT);
                 param.width = widthDP;
                 varSelection.setLayoutParams(param);
@@ -599,7 +721,7 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
     //When user selects variable
     public class onSelectNewVar implements AdapterView.OnItemSelectedListener{
         @Override
-        public void onItemSelected(final AdapterView<?> adapter,View v, int position, long arg3){
+        public void onItemSelected(final AdapterView<?> adapter,final View v, int position, long arg3){
             if (adapter.getSelectedItem().toString().equals("Add New")){
                 //show an alert dialog asking for a new variable name
                 AlertDialog.Builder newVarDialog = new AlertDialog.Builder(GOTO_SIMULATOR.this);
@@ -616,12 +738,34 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                 newVarDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //add new variable to spinner list and update spinner
                         newVarName = input.getText().toString();
-                        int newVarPos = varList.size()-1;
-                        varList.add(newVarPos,newVarName);
-                        ArrayAdapter<String> newadapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
-                        varSelection.setAdapter(newadapter);
-                        adapter.setSelection(newVarPos);
+                        if (varList.contains(newVarName)){
+                            AlertDialog.Builder errorDialog = new AlertDialog.Builder(GOTO_SIMULATOR.this);
+                            errorDialog.setMessage("Variable already exist.");
+                            errorDialog.setCancelable(true);
+                            errorDialog.show();
+                            adapter.setSelection(0);
+                        }else{
+                            int newVarPos = varList.size()-1;
+                            varList.add(newVarPos,newVarName);
+                            ArrayAdapter<String> newadapter = new ArrayAdapter<String>(GOTO_SIMULATOR.this, android.R.layout.simple_spinner_dropdown_item, varList);
+                            for (int i=0; i<existingSpinners.size();i++){
+                                Spinner x = existingSpinners.get(i);
+                                if (x.getSelectedItem().equals("Add New")){
+                                    x.setAdapter(newadapter);
+                                    x.setSelection(newVarPos);
+                                }else{
+                                    int currentSelected = x.getSelectedItemPosition();
+                                    x.setAdapter(newadapter);
+                                    x.setSelection(currentSelected);
+                                }
+
+                            }
+                            //varSelection.setAdapter(newadapter);
+                            //adapter.getAdapter();
+                            adapter.setSelection(newVarPos);
+                        }
                     }
                 });
                 newVarDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -632,6 +776,8 @@ public class GOTO_SIMULATOR extends AppCompatActivity{
                     }
                 });
                 newVarDialog.show();
+            }else{
+                adapter.setSelection(position);
             }
         }
         @Override
